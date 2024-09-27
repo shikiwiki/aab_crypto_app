@@ -18,13 +18,13 @@ class Routes {
     GetPage(name: home, page: () => HomeScreen()),
     GetPage(
       name: trade,
-      page: () => const TradeScreen(),
+      page: () => TradeScreen(),
       transition: Transition.fade,
       transitionDuration: const Duration(seconds: 1),
     ),
     GetPage(
-      name: trade,
-      page: () => const LogInScreen(),
+      name: logIn,
+      page: () => LogInModal(),
     ),
   ];
 }

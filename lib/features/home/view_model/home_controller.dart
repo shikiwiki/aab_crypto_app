@@ -4,7 +4,25 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var items = <Item>[].obs;
+  var items = <Item>[
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+    Item.empty(),
+  ].obs;
   var page = 1.obs;
   var sortBy = 'name'.obs;
   var isLoading = false.obs;

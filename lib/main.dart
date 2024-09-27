@@ -1,9 +1,12 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/routes/routes.dart';
+import 'package:aab_crypto_app/features/main/view/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const CryptoApp());
 }
 
@@ -18,8 +21,9 @@ class CryptoApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      initialRoute: Routes.home,
-      getPages: Routes.routes,
+      home: MainScreen(),
+      // initialRoute: Routes.home,
+      // getPages: Routes.routes,
     );
   }
 }

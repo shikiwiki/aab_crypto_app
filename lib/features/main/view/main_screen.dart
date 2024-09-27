@@ -1,5 +1,7 @@
+import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/features/home/view/home_screen.dart';
 import 'package:aab_crypto_app/features/main/services/main_service.dart';
+import 'package:aab_crypto_app/features/main/view/log_in_modal.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:aab_crypto_app/features/trade/view/trade_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,52 +14,59 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sticky Header with Nav'),
-        actions: [
-          Obx(() {
-            if (!controller.isLoggedIn.value) {
-              return IconButton(
-                icon: const Icon(Icons.login),
-                onPressed: () {
-                  controller.toggleLogin(); // For demo purposes, toggle login state
-                  Get.snackbar('Login', 'User Logged In');
-                },
-              );
-            }
-            return const SizedBox.shrink(); // Return empty widget if logged in
-          })
-        ],
-      ),
-      body: Column(
-        children: [
-          Container(
-            color: Colors.grey[300],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(onPressed: () => Get.to(HomeScreen()), child: const Text('Home')),
-                TextButton(onPressed: () => Get.to(const TradeScreen()), child: const Text('Trade')),
-              ],
-            ),
+    controller.loadLoginState();
+
+    return DefaultTabController(
+      initialIndex: 0,
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(AppConstants.title),
+          backgroundColor: Colors.yellow,
+          toolbarHeight: 30,
+          bottom: const TabBar(
+            tabs: <Widget>[
+              Tab(icon: Icon(Icons.home)),
+              Tab(icon: Icon(Icons.attach_money_sharp)),
+            ],
           ),
-          Expanded(
-            child: Obx(() {
-              return ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: const Icon(Icons.label),
-                    title: Text('Item $index'),
-                    subtitle: Text('Details about item $index'),
+          actions: [
+            Obx(
+              () {
+                if (!controller.isLoggedIn.value) {
+                  return IconButton(
+                    icon: const Icon(Icons.login),
+                    onPressed: () {
+                      _showLoginModal(context);
+                      // controller
+                      //     .toggleLogin(); // For demo purposes, toggle login state
+                      // Get.snackbar('Login', 'User Logged In');
+                    },
                   );
-                },
-              );
-            }),
-          ),
-        ],
+                }
+                return const SizedBox.shrink();
+              },
+            )
+          ],
+        ),
+        body: Expanded(
+          child: Obx(() {
+            return TabBarView(children: <Widget>[
+              HomeScreen(),
+              TradeScreen(),
+            ]);
+          }),
+        ),
       ),
+    );
+  }
+
+  void _showLoginModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return LogInModal();
+      },
     );
   }
 }

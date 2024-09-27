@@ -1,6 +1,10 @@
+import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:aab_crypto_app/core/widgets/item_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../main/view_model/models/item.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
@@ -12,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     return Column(
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             DropdownButton<String>(
               value: controller.sortBy.value,
@@ -29,25 +33,28 @@ class HomeScreen extends StatelessWidget {
         Expanded(
           child: Obx(() {
             if (controller.items.isEmpty && !controller.isLoading.value) {
-              return const Center(child: Text('No items found'));
+              return const Center(child: Text(AppConstants.noItemsFound));
             }
             return ListView.builder(
               itemCount: controller.items.length + 1,
               // +1 for the load more button
               itemBuilder: (context, index) {
                 if (index < controller.items.length) {
-                  return ListTile(
-                    leading: const Icon(Icons.label),
-                    title: Text(controller.items[index].name),
-                    subtitle: Text('\$${controller.items[index].price}'),
-                  );
+                  return ItemWidget(item: Item.empty());
+
+                  // return ListTile(
+                  //   leading: const Icon(Icons.label),
+                  //   title: Text(controller.items[index].name),
+                  //   subtitle: Text('\$${controller.items[index].price}'),
+                  // );
                 } else if (!controller.isLoading.value) {
                   return TextButton(
                     onPressed: controller.loadMoreItems,
-                    child: const Text('Load More'),
+                    child: const Text(AppConstants.more),
                   );
                 } else {
-                  return const Center(child: CircularProgressIndicator());
+                  return const Center(
+                      child: CircularProgressIndicator());
                 }
               },
             );
