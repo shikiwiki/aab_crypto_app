@@ -1,10 +1,9 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/widgets/item_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
+import 'package:aab_crypto_app/features/main/view_model/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../main/view_model/models/item.dart';
 
 class HomeScreen extends StatelessWidget {
   final HomeController controller = Get.put(HomeController());
@@ -20,7 +19,8 @@ class HomeScreen extends StatelessWidget {
           children: [
             DropdownButton<String>(
               value: controller.sortBy.value,
-              items: <String>['name', 'price'].map((String value) {
+              items: <String>[AppConstants.name, AppConstants.price]
+                  .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value.capitalizeFirst!),
@@ -36,25 +36,18 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: Text(AppConstants.noItemsFound));
             }
             return ListView.builder(
-              itemCount: controller.items.length + 1,
+              itemCount: controller.items.length + AppConstants.one,
               // +1 for the load more button
               itemBuilder: (context, index) {
                 if (index < controller.items.length) {
                   return ItemWidget(item: Item.empty());
-
-                  // return ListTile(
-                  //   leading: const Icon(Icons.label),
-                  //   title: Text(controller.items[index].name),
-                  //   subtitle: Text('\$${controller.items[index].price}'),
-                  // );
                 } else if (!controller.isLoading.value) {
                   return TextButton(
                     onPressed: controller.loadMoreItems,
                     child: const Text(AppConstants.more),
                   );
                 } else {
-                  return const Center(
-                      child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
               },
             );

@@ -18,4 +18,11 @@ class MainController extends GetxController {
     final storage = GetStorage();
     isLoggedIn.value = storage.read('isLoggedIn') ?? false;
   }
+
+  void logout() {
+    isLoggedIn.value = false;  // Update the local login state
+    final storage = GetStorage();
+    storage.remove('isLoggedIn');   // Remove the login state from storage
+    Get.snackbar('Logout', 'You have been logged out successfully.');
+  }
 }

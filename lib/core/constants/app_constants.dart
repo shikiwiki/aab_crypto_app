@@ -5,4 +5,26 @@ abstract class AppConstants {
   static const trade = 'Trade';
   static const noItemsFound = 'No items found';
   static const more = 'More';
+  static const name = 'name';
+  static const price = 'price';
+  static const cryptoAmount = 'Crypto Amount';
+  static const fiatAmount = 'Fiat Amount (USD)';
+  static const swap = 'Swap';
+  static const noAccessMessage =
+      'Please log in to access the trade functionality.';
+  static const logIn = 'Log In';
+  static const email = 'Email';
+  static const password = 'Password';
+  static const logInMessage = 'You logged in successfully!';
+  static const error = 'Error';
+  static const errorMessage = 'Please, input correct data.';
+
+  static const int one = 1;
+  static const int initialTabIndex = 0;
+  static const int tabsCount = 2;
+  static const double toolBarHeight = 30;
+
+  static const double paddingMedium = 24;
+
+  static const double separatorSize = 10;
 }

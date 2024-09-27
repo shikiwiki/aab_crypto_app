@@ -17,13 +17,13 @@ class MainScreen extends StatelessWidget {
     controller.loadLoginState();
 
     return DefaultTabController(
-      initialIndex: 0,
-      length: 2,
+      initialIndex: AppConstants.initialTabIndex,
+      length: AppConstants.tabsCount,
       child: Scaffold(
         appBar: AppBar(
           title: const Text(AppConstants.title),
           backgroundColor: Colors.yellow,
-          toolbarHeight: 30,
+          toolbarHeight: AppConstants.toolBarHeight,
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(icon: Icon(Icons.home)),
@@ -38,23 +38,27 @@ class MainScreen extends StatelessWidget {
                     icon: const Icon(Icons.login),
                     onPressed: () {
                       _showLoginModal(context);
-                      // controller
-                      //     .toggleLogin(); // For demo purposes, toggle login state
-                      // Get.snackbar('Login', 'User Logged In');
                     },
                   );
+                } else {
+                  // return const SizedBox.shrink();
+                  return IconButton(
+                    icon: const Icon(Icons.logout),
+                    onPressed: controller.logout,
+                  );
                 }
-                return const SizedBox.shrink();
               },
             )
           ],
         ),
         body: Expanded(
           child: Obx(() {
-            return TabBarView(children: <Widget>[
-              HomeScreen(),
-              TradeScreen(),
-            ]);
+            return TabBarView(
+              children: <Widget>[
+                HomeScreen(),
+                TradeScreen(),
+              ],
+            );
           }),
         ),
       ),
