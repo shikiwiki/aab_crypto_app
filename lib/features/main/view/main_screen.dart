@@ -51,16 +51,14 @@ class MainScreen extends StatelessWidget {
             )
           ],
         ),
-        body: Expanded(
-          child: Obx(() {
-            return TabBarView(
-              children: <Widget>[
-                HomeScreen(),
-                TradeScreen(),
-              ],
-            );
-          }),
-        ),
+        body: Obx(() {
+          return TabBarView(
+            children: <Widget>[
+              HomeScreen(),
+              TradeScreen(),
+            ],
+          );
+        }),
       ),
     );
   }

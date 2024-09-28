@@ -1,7 +1,6 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/widgets/item_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
-import 'package:aab_crypto_app/features/main/view_model/models/item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,15 +17,18 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              value: controller.sortBy.value,
+              hint: const Text('Sort By'),
+              // value: controller.sortingCriteria.value,
               items: <String>[AppConstants.name, AppConstants.price]
                   .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value.capitalizeFirst!),
+                  child: Text(value),
                 );
               }).toList(),
-              onChanged: controller.changeSort,
+              onChanged: (_) {
+                controller.sortByCriteria();
+              },
             ),
           ],
         ),
@@ -36,14 +38,14 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: Text(AppConstants.noItemsFound));
             }
             return ListView.builder(
-              itemCount: controller.items.length + AppConstants.one,
+              itemCount: controller.displayItems.length + AppConstants.one,
               // +1 for the load more button
               itemBuilder: (context, index) {
-                if (index < controller.items.length) {
-                  return ItemWidget(item: Item.empty());
+                if (index < controller.displayItems.length) {
+                  return ItemWidget(item: controller.items[index]);
                 } else if (!controller.isLoading.value) {
                   return TextButton(
-                    onPressed: controller.loadMoreItems,
+                    onPressed: controller.showMoreItems,
                     child: const Text(AppConstants.more),
                   );
                 } else {
