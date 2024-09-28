@@ -1,6 +1,6 @@
 class Item {
   final String name;
-  final String? price;
+  final double? price;
   final String iconId;
 
   Item({
@@ -12,7 +12,7 @@ class Item {
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
       name: json['name'],
-      price: json['price_usd']?.toString(),
+      price: json['price_usd'],
       iconId: json['id_icon'] ?? '',
     );
   }

@@ -23,6 +23,7 @@ abstract class AppConstants {
   static const buy = 'Buy';
   static const sell = 'Sell';
 
+  static const zero = 0;
   static const int one = 1;
   static const int initialTabIndex = 0;
   static const int tabsCount = 2;
@@ -31,6 +32,4 @@ abstract class AppConstants {
   static const double paddingMedium = 24;
 
   static const double separatorSize = 10;
-
-  static const nullString = 'null';
 }

@@ -8,7 +8,7 @@ class HomeController extends GetxController {
   var items = <Item>[].obs;
   var displayItems = <Item>[].obs;
   var displaySize = 10;
-  var sortingCriteria = ''.obs;
+  var sortingCriteria = AppConstants.name.obs;
   var isLoading = false.obs;
 
   final Dio dio = Dio();
@@ -27,20 +27,13 @@ class HomeController extends GetxController {
     dio.options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
 
     try {
-      final response = await dio.get(
-        '${AppConstants.baseUrl}/v1/assets',
-        // queryParameters: {
-        //   'limit': showAmount.value,
-        //   'offset': offset.value,
-        // },
-      );
+      final response = await dio.get('${AppConstants.baseUrl}/v1/assets');
 
       if (response.statusCode == 200) {
         List<Item> newItems =
             (response.data as List).map((json) => Item.fromJson(json)).toList();
         items.assignAll(newItems);
-        displayItems.assignAll(
-            items.take(displaySize)); // Show the first pageSize items initially
+        displayItems.assignAll(items.take(displaySize));
         debugPrint('ITEMS_LIST contains ${items.length} items:\n');
       } else {
         throw Exception('Failed to load items');
@@ -58,21 +51,16 @@ class HomeController extends GetxController {
           items.skip(displayItems.length).take(displaySize).toList();
       displayItems.addAll(nextItems);
     }
-    // showAmount.value+10;
-    // offset.value+10;
-    // fetchItems();
   }
 
   void sortByCriteria() {
     if (sortingCriteria.value == AppConstants.name) {
       items.sort((a, b) => a.name.compareTo(b.name));
     } else if (sortingCriteria.value == AppConstants.price) {
-      items.sort((a, b) {
-        final priceA = double.tryParse(a.price ?? '') ?? 0;
-        final priceB = double.tryParse(b.price ?? '') ?? 0;
-        return priceA.compareTo(priceB); // Sort by price
-      });
+      items.sort((a, b) => (b.price ?? AppConstants.zero).compareTo(a.price ?? AppConstants.zero));
     }
-    displayItems.assignAll(items.take(displaySize));
+    displayItems.clear();
+    displayItems.value = items.take(displaySize).toList();
+    // displayItems.assignAll(items.take(displaySize));
   }
 }

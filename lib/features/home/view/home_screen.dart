@@ -37,21 +37,25 @@ class HomeScreen extends StatelessWidget {
             if (controller.items.isEmpty && !controller.isLoading.value) {
               return const Center(child: Text(AppConstants.noItemsFound));
             }
-            return ListView.builder(
-              itemCount: controller.displayItems.length + AppConstants.one,
-              // +1 for the load more button
-              itemBuilder: (context, index) {
-                if (index < controller.displayItems.length) {
-                  return ItemWidget(item: controller.items[index]);
-                } else if (!controller.isLoading.value) {
-                  return TextButton(
-                    onPressed: controller.showMoreItems,
-                    child: const Text(AppConstants.more),
-                  );
-                } else {
-                  return const Center(child: CircularProgressIndicator());
-                }
+            return RefreshIndicator(
+              onRefresh: () async {
+                await controller.fetchItems();
               },
+              child: ListView.builder(
+                itemCount: controller.displayItems.length + AppConstants.one,
+                itemBuilder: (context, index) {
+                  if (index < controller.displayItems.length) {
+                    return ItemWidget(item: controller.items[index]);
+                  } else if (!controller.isLoading.value) {
+                    return TextButton(
+                      onPressed: controller.showMoreItems,
+                      child: const Text(AppConstants.more),
+                    );
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                },
+              ),
             );
           }),
         ),
