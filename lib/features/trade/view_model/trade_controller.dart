@@ -1,35 +1,68 @@
-import 'package:get/get.dart';
+import 'package:aab_crypto_app/features/home/view_model/models/asset.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
+
+import '../../../core/constants/app_constants.dart';
 
 class TradeController extends GetxController {
-  var selectedCrypto = 'BTC'.obs;
   var fiatAmount = 0.0.obs;
-  var cryptoAmount = 0.0.obs;
+  var currentAsset = Asset.empty().obs;
+  var cryptoAssets = <Asset>[].obs;
 
-  // Hardcoded crypto assets and their prices in USD
-  final List<Map<String, dynamic>> cryptoAssets = [
-    {'symbol': 'BTC', 'name': 'Bitcoin', 'price': 60000.0},
-    {'symbol': 'ETH', 'name': 'Ethereum', 'price': 4000.0},
-    {'symbol': 'LTC', 'name': 'Litecoin', 'price': 200.0},
-  ];
+  final Dio dio = Dio()
+    ..options.headers['Content-Type'] = AppConstants.contentType
+    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchCryptoAssets();
+  }
+
+  void selectItem(String name) {
+    final selectedItem = cryptoAssets.firstWhere(
+      (asset) => asset.name == name,
+      orElse: () => Asset.empty(),
+    );
+    currentAsset.value = selectedItem;
+  }
+
+  Future<void> fetchCryptoAssets() async {
+    try {
+      final response = await dio.get('${AppConstants.baseUrl}/v1/assets');
+
+      if (response.statusCode == 200) {
+        List<Asset> allAssets = (response.data as List)
+            .map((json) => Asset.fromJson(json))
+            .toList();
+        List<Asset> cryptoItems = [];
+        for (var asset in allAssets) {
+          if (asset.isCrypto) cryptoItems.add(asset);
+        }
+        cryptoAssets.value =
+            cryptoItems.where((asset) => asset.price != null).toList();
+      } else {
+        throw Exception('Failed to load assets');
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+
+    if (cryptoAssets.isNotEmpty) {
+      currentAsset.value = cryptoAssets.first;
+    }
+  }
 
   void calculateFiatAmount(double cryptoAmount) {
-    if (cryptoAmount > 0) {
-      var asset = cryptoAssets.firstWhere((element) => element['symbol'] == selectedCrypto.value);
-      fiatAmount.value = cryptoAmount * asset['price'];
-    } else {
-      fiatAmount.value = 0.0;
+    if (currentAsset.value.price != null) {
+      fiatAmount.value = cryptoAmount * currentAsset.value.price!;
     }
   }
 
   void swapFields() {
-    var temp = cryptoAmount.value;
-    cryptoAmount.value = fiatAmount.value == 0 ? 0.0 : (fiatAmount.value / getSelectedCryptoPrice());
-    fiatAmount.value = temp * getSelectedCryptoPrice();
-  }
-
-  double getSelectedCryptoPrice() {
-    var asset = cryptoAssets.firstWhere((element) => element['symbol'] == selectedCrypto.value);
-    return asset['price'];
+    // var temp = cryptoAmount.value;
+    // cryptoAmount.value = fiatAmount.value == 0 ? 0.0 : (fiatAmount.value / getSelectedCryptoPrice());
+    // fiatAmount.value = temp * getSelectedCryptoPrice();
   }
 }

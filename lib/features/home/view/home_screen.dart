@@ -1,5 +1,5 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
-import 'package:aab_crypto_app/core/widgets/item_widget.dart';
+import 'package:aab_crypto_app/core/widgets/asset_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         ),
         Expanded(
           child: Obx(() {
-            if (controller.items.isEmpty && !controller.isLoading.value) {
+            if (controller.assets.isEmpty && !controller.isLoading.value) {
               return const Center(child: Text(AppConstants.noItemsFound));
             }
             return RefreshIndicator(
@@ -41,12 +41,12 @@ class HomeScreen extends StatelessWidget {
                 await controller.fetch();
               },
               child: ListView.builder(
-                itemCount: controller.displayItems.length + AppConstants.one,
+                itemCount: controller.displayAssets.length + AppConstants.one,
                 itemBuilder: (context, index) {
-                  if (index < controller.displayItems.length) {
-                    return ItemWidget(
-                      item: controller.items[index],
-                      iconUrl: controller.iconUrls[controller.items[index].assetId],
+                  if (index < controller.displayAssets.length) {
+                    return AssetWidget(
+                      asset: controller.assets[index],
+                      iconUrl: controller.iconUrls[controller.assets[index].assetId],
                     );
                   } else if (!controller.isLoading.value) {
                     return TextButton(

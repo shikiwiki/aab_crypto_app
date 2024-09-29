@@ -41,7 +41,6 @@ class MainScreen extends StatelessWidget {
                     },
                   );
                 } else {
-                  // return const SizedBox.shrink();
                   return IconButton(
                     icon: const Icon(Icons.logout),
                     onPressed: controller.logout,

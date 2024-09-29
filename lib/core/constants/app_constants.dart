@@ -23,6 +23,7 @@ abstract class AppConstants {
   static const buy = 'Buy';
   static const sell = 'Sell';
   static const sortBy = 'Sort by';
+  static const chooseAsset = 'Choose asset';
 
   static const zero = 0;
   static const int one = 1;

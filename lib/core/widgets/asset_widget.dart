@@ -1,22 +1,22 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
-import 'package:aab_crypto_app/features/home/view_model/models/item.dart';
+import 'package:aab_crypto_app/features/home/view_model/models/asset.dart';
 import 'package:flutter/material.dart';
 
-class ItemWidget extends StatefulWidget {
-  const ItemWidget({
+class AssetWidget extends StatefulWidget {
+  const AssetWidget({
     super.key,
-    required this.item,
+    required this.asset,
     required this.iconUrl,
   });
 
-  final Item item;
+  final Asset asset;
   final String? iconUrl;
 
   @override
-  State<ItemWidget> createState() => _ItemWidgetState();
+  State<AssetWidget> createState() => _AssetWidgetState();
 }
 
-class _ItemWidgetState extends State<ItemWidget> {
+class _AssetWidgetState extends State<AssetWidget> {
   String? _selectedAction;
 
   @override
@@ -25,9 +25,9 @@ class _ItemWidgetState extends State<ItemWidget> {
       leading: widget.iconUrl != null
           ? Image.network(widget.iconUrl!)
           : const Icon(Icons.attach_money, color: Colors.grey),
-      title: Text(widget.item.name),
-      subtitle: (widget.item.price != null)
-          ? Text('${widget.item.price} USD')
+      title: Text(widget.asset.name),
+      subtitle: (widget.asset.price != null)
+          ? Text('${widget.asset.price} USD')
           : const SizedBox.shrink(),
       trailing: DropdownButton<String>(
         hint: const Text(AppConstants.select),

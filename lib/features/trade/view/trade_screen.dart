@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TradeScreen extends StatelessWidget {
-  TradeScreen({super.key});
-
   final TradeController tradeController = Get.put(TradeController());
+
+  TradeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,15 +24,20 @@ class TradeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              value: tradeController.selectedCrypto.value,
+              hint: const Text(AppConstants.chooseAsset),
+              value: tradeController.currentAsset.value.name.isNotEmpty
+                  ? tradeController.currentAsset.value.name
+                  : null,
               items: tradeController.cryptoAssets.map((asset) {
                 return DropdownMenuItem<String>(
-                  value: asset['symbol'],
-                  child: Text(asset['name']),
+                  value: asset.name,
+                  child: Text(asset.name),
                 );
               }).toList(),
               onChanged: (value) {
-                tradeController.selectedCrypto.value = value!;
+                if (value != null) {
+                  tradeController.selectItem(value);
+                }
               },
             ),
             TextField(
@@ -52,7 +57,8 @@ class TradeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               readOnly: true,
               controller: TextEditingController(
-                  text: tradeController.fiatAmount.value.toStringAsFixed(2)),
+                text: tradeController.fiatAmount.value.toStringAsFixed(2),
+              ),
             ),
             const SizedBox(height: AppConstants.separatorSize),
             ElevatedButton(

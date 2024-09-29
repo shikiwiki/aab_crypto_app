@@ -11,7 +11,7 @@ class MainController extends GetxController {
   void toggleLogin() {
     isLoggedIn.value = !isLoggedIn.value;
     final storage = GetStorage();
-    storage.write('isLoggedIn', isLoggedIn.value); // Save login state
+    storage.write('isLoggedIn', isLoggedIn.value);
   }
 
   void loadLoginState() {
@@ -20,9 +20,9 @@ class MainController extends GetxController {
   }
 
   void logout() {
-    isLoggedIn.value = false;  // Update the local login state
+    isLoggedIn.value = false;
     final storage = GetStorage();
-    storage.remove('isLoggedIn');   // Remove the login state from storage
+    storage.remove('isLoggedIn');
     Get.snackbar('Logout', 'You have been logged out successfully.');
   }
 }
