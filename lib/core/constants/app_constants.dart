@@ -22,9 +22,11 @@ abstract class AppConstants {
   static const select = 'Select';
   static const buy = 'Buy';
   static const sell = 'Sell';
+  static const sortBy = 'Sort by';
 
   static const zero = 0;
   static const int one = 1;
+  static const int ten = 10;
   static const int initialTabIndex = 0;
   static const int tabsCount = 2;
   static const double toolBarHeight = 30;

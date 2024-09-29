@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 class HomeController extends GetxController {
   var items = <Item>[].obs;
   var displayItems = <Item>[].obs;
-  var displaySize = 10;
+  var displaySize = AppConstants.ten;
   var sortingCriteria = AppConstants.name.obs;
   var isLoading = false.obs;
 
@@ -30,11 +30,14 @@ class HomeController extends GetxController {
       final response = await dio.get('${AppConstants.baseUrl}/v1/assets');
 
       if (response.statusCode == 200) {
-        List<Item> newItems =
+        List<Item> allItems =
             (response.data as List).map((json) => Item.fromJson(json)).toList();
-        items.assignAll(newItems);
+        List<Item> cryptoItems = [];
+        for (var item in allItems) {
+          if (item.isCrypto) cryptoItems.add(item);
+        }
+        items.assignAll(cryptoItems);
         displayItems.assignAll(items.take(displaySize));
-        debugPrint('ITEMS_LIST contains ${items.length} items:\n');
       } else {
         throw Exception('Failed to load items');
       }
@@ -57,7 +60,8 @@ class HomeController extends GetxController {
     if (sortingCriteria.value == AppConstants.name) {
       items.sort((a, b) => a.name.compareTo(b.name));
     } else if (sortingCriteria.value == AppConstants.price) {
-      items.sort((a, b) => (b.price ?? AppConstants.zero).compareTo(a.price ?? AppConstants.zero));
+      items.sort((a, b) => (b.price ?? AppConstants.zero)
+          .compareTo(a.price ?? AppConstants.zero));
     }
     displayItems.clear();
     displayItems.value = items.take(displaySize).toList();

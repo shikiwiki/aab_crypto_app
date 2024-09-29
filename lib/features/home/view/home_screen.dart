@@ -17,8 +17,7 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              hint: const Text('Sort By'),
-              // value: controller.sortingCriteria.value,
+              hint: const Text(AppConstants.sortBy),
               items: <String>[AppConstants.name, AppConstants.price]
                   .map((String value) {
                 return DropdownMenuItem<String>(
