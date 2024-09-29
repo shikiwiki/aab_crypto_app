@@ -1,13 +1,13 @@
 class Item {
   final String name;
   final double? price;
-  final String iconId;
-  final dynamic isCrypto;
+  final String assetId;
+  final bool isCrypto;
 
   Item({
     required this.name,
     required this.price,
-    required this.iconId,
+    required this.assetId,
     required this.isCrypto,
   });
 
@@ -15,7 +15,7 @@ class Item {
     return Item(
       name: json['name'],
       price: json['price_usd'],
-      iconId: json['id_icon'] ?? '',
+      assetId: json['asset_id'] ?? '',
       isCrypto: json['type_is_crypto'] == 1,
     );
   }

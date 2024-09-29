@@ -38,13 +38,16 @@ class HomeScreen extends StatelessWidget {
             }
             return RefreshIndicator(
               onRefresh: () async {
-                await controller.fetchItems();
+                await controller.fetch();
               },
               child: ListView.builder(
                 itemCount: controller.displayItems.length + AppConstants.one,
                 itemBuilder: (context, index) {
                   if (index < controller.displayItems.length) {
-                    return ItemWidget(item: controller.items[index]);
+                    return ItemWidget(
+                      item: controller.items[index],
+                      iconUrl: controller.iconUrls[controller.items[index].assetId],
+                    );
                   } else if (!controller.isLoading.value) {
                     return TextButton(
                       onPressed: controller.showMoreItems,
