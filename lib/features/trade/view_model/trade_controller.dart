@@ -1,14 +1,14 @@
+import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/features/home/view_model/models/asset.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
-import '../../../core/constants/app_constants.dart';
-
 class TradeController extends GetxController {
   var fiatAmount = 0.0.obs;
   var currentAsset = Asset.empty().obs;
   var cryptoAssets = <Asset>[].obs;
+  num cryptoAmount = 0;
 
   final Dio dio = Dio()
     ..options.headers['Content-Type'] = AppConstants.contentType
@@ -26,6 +26,7 @@ class TradeController extends GetxController {
       orElse: () => Asset.empty(),
     );
     currentAsset.value = selectedItem;
+    calculateFiatAmount();
   }
 
   Future<void> fetchCryptoAssets() async {
@@ -54,7 +55,7 @@ class TradeController extends GetxController {
     }
   }
 
-  void calculateFiatAmount(double cryptoAmount) {
+  void calculateFiatAmount() {
     if (currentAsset.value.price != null) {
       fiatAmount.value = cryptoAmount * currentAsset.value.price!;
     }

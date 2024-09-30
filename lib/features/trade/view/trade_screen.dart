@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 class TradeScreen extends StatelessWidget {
   final TradeController tradeController = Get.put(TradeController());
+  final TextEditingController cryptoAmountController = TextEditingController();
 
   TradeScreen({super.key});
 
@@ -17,6 +18,7 @@ class TradeScreen extends StatelessWidget {
       if (!isLoggedIn) {
         return const Center(child: Text(AppConstants.noAccessMessage));
       }
+      cryptoAmountController.text = tradeController.cryptoAmount.toString();
 
       return Padding(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
@@ -41,13 +43,24 @@ class TradeScreen extends StatelessWidget {
               },
             ),
             TextField(
+              controller: cryptoAmountController,
               decoration:
                   const InputDecoration(labelText: AppConstants.cryptoAmount),
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
+              onTap: () {
+                if (cryptoAmountController.text == '0.0' ||
+                    cryptoAmountController.text.isEmpty) {
+                  cryptoAmountController.clear();
+                }
+              },
               onChanged: (value) {
-                tradeController
-                    .calculateFiatAmount(double.tryParse(value) ?? 0);
+                if (value.isNotEmpty) {
+                  tradeController.cryptoAmount = num.tryParse(value) ?? 0;
+                  tradeController.calculateFiatAmount();
+                } else {
+                  tradeController.cryptoAmount = 0;
+                }
               },
             ),
             const SizedBox(height: AppConstants.separatorSize),
