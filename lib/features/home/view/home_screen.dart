@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
                 if (value != null) {
                   controller.sortingCriteria.value =
                       controller.sortingCriteria.value == value
-                          ? AppConstants.reversed(value)
+                          ? '${value}Reversed'
                           : value;
                   controller.sortByCriteria();
                 }

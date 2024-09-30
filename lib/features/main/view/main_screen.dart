@@ -20,7 +20,14 @@ class MainScreen extends StatelessWidget {
       length: AppConstants.tabsCount,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(AppConstants.title),
+          title: Obx(() {
+            return Text(
+              controller.isLoggedIn.value
+                  ? controller.userEmail.value
+                  : AppConstants.title,
+            );
+          }),
+          foregroundColor: AppConstants.secondaryColor,
           backgroundColor: AppConstants.primaryColor,
           toolbarHeight: AppConstants.toolBarHeight,
           bottom: const TabBar(

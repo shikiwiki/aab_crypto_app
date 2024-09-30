@@ -14,7 +14,6 @@ abstract class AppConstants {
   static const isLoggedIn = 'isLoggedIn';
   static const loggedOut = 'Logout';
   static const loggedOutMessage = 'Logout';
-  static reversed(String value) => '${value}Reversed';
   static const noItemsFound = 'No items found';
   static const fetchAssetsExceptionMessage = 'Failed to load assets';
   static const fetchIconsExceptionMessage = 'Failed to load icons';
@@ -43,6 +42,7 @@ abstract class AppConstants {
   static const sell = 'Sell';
   static const sortBy = 'Sort by';
   static const selectAsset = 'Select asset';
+  static const userEmailKey = 'userEmailKey';
 
   static const primaryColor = Color(0xFF8A1538);
   static const secondaryColor = Colors.white;
@@ -61,4 +61,5 @@ abstract class AppConstants {
   static const double paddingMedium = 24;
 
   static const double separatorSize = 10;
+
 }

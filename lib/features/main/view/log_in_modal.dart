@@ -2,7 +2,6 @@ import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 class LogInModal extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -35,9 +34,11 @@ class LogInModal extends StatelessWidget {
               r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
             );
             final RegExp passwordRegExp = RegExp(r'^[A-Za-z0-9.]+$');
+
             if (emailRegExp.hasMatch(emailController.text) &&
                 passwordRegExp.hasMatch(passwordController.text)) {
-              mainController.toggleLogin();
+              // Call the login method and pass the email and password
+              mainController.login(emailController.text, passwordController.text);
               Get.back();
               Get.snackbar(AppConstants.logIn, AppConstants.logInMessage);
             } else {

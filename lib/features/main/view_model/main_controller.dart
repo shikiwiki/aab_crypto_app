@@ -4,11 +4,20 @@ import 'package:get_storage/get_storage.dart';
 
 class MainController extends GetxController {
   var isLoggedIn = false.obs;
+  var userEmail = AppConstants.empty.obs;
 
-  void toggleLogin() {
-    isLoggedIn.value = !isLoggedIn.value;
+  // void toggleLogin() {
+  //   isLoggedIn.value = !isLoggedIn.value;
+  //   final storage = GetStorage();
+  //   storage.write(AppConstants.isLoggedIn, isLoggedIn.value);
+  // }
+
+  void login(String email, String password) {
+    isLoggedIn.value = true;
+    userEmail.value = email; // Set the user email
     final storage = GetStorage();
-    storage.write(AppConstants.isLoggedIn, isLoggedIn.value);
+    storage.write(AppConstants.isLoggedIn, true);
+    storage.write(AppConstants.userEmailKey, userEmail.value);
   }
 
   void loadLoginState() {
