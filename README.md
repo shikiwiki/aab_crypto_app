@@ -1,76 +1,127 @@
+# Crypto Trading App
 
-The goal is to build a crypto trading app using Flutter, demonstrating knowledge of
-modern Flutter practices and state management using GetX.
+## Overview
 
-Main Layout
-Sticky Header:
-• The app should have a sticky header (App Bar with Tab Bar inside) at the top of the screen.
-• The header will include a nav menu with two options:
-• Home (default active page).
-• Trade.
-• The right side of the header will show user info:
-• If the user is not logged in, display a log-in button.
-• Clicking the log-in button will open a modal with a login form containing
-email and password fields.
+This is a Flutter-based crypto trading application that allows users to trade cryptocurrencies, view
+market data, and manage their accounts. The app demonstrates practical knowledge of modern Flutter
+practices, including state management with GetX.
 
-Home Page
-• The Home Page will show a list or table of crypto assets.
-• Initially, display 10 items, with the ability to load more on demand by
-clicking a button.
-• Sorting should be possible by asset name or price.
-• Each crypto item will display:
-• Price.
-• Icon.
-• Name.
-• A button with a dropdown menu for "Buy" and "Sell" options.
+## Features
 
-Trade Page
-The Trade Page will contain a single form, available only to
-logged-in users. It will have the following fields:
-Crypto Amount Input Field:
-• Dropdown menu to select a crypto asset.
-• Allows the user to enter the crypto amount
-Fiat Amount Input Field:
-• Displays the fiat equivalent (USD) of the entered crypto amount.
-Swap Button:
-• Allows users to swap the values between the crypto and fiat
-fields.
+- **Sticky Header**: Includes a persistent App Bar with Tab Bar for navigation.
+- **Home Page**:
+    - Displays a list of crypto assets with loading capabilities.
+    - Supports sorting by asset name and price.
+    - Each item includes:
+        - Asset price
+        - Asset icon
+        - Asset name
+        - Dropdown menu for "Buy" and "Sell" options
+- **Trade Page**:
+    - Accessible only to logged-in users.
+    - Includes input fields for crypto amount and fiat equivalent (USD).
+    - Swap button to exchange values between crypto and fiat inputs.
+- **Authentication**:
+    - Simple login form for user authentication with email and password.
+    - User state management using GetX and local storage.
 
-Programming Language:
-• The app must be fully developed using Dart with Flutter.
-Project Structure:
-• Ensure the app follows proper project structure (i.e., separation of
-concerns between views, controllers, and services).
-State Management:
-• Use GetX for state management.
-• Properly structure reactive state management for dynamic updates.
-Network Calls:
-• Utilize Dio or http package for API calls and caching.
-• Properly handle pagination, filtering, and errors using GetX GetConnect or
-other controllers.
-Local Storage:
-• Handle authentication state using GetStorage or SharedPreferences.
-Authentication:
-• Simple local authentication using username/password.
-• Handle login, logout, and user state using GetX. API
-Resources
-Use the following APIs to fetch data:
-• Exchange rates: https://exchangerate.host
-• Crypto assets: https://www.coinapi.io or https://developers.cryptoapis.io
-Design
-Custom Design:
-• Avoid using third-party UI component libraries. Design a basic system for
-buttons, inputs, and text using Flutter's built-in widgets (TextButton,
-TextField, Container, etc.).
-• Follow Material Design guidelines and ensure responsiveness across
-devices.
-Task Submission
-• The fully functional Flutter project must be uploaded to GitHub, with a clear
-README for setup instructions.
-• The work must be original and must not involve external assistance.
-Provide the GitHub repository link once completed.
-Additional Resources
-• Flutter Documentation: https://flutter.dev/docs
-• GetX Package: https://pub.dev/packages/get
-• Dio Package: https://pub.dev/packages/dio
-• CoinAPI Docs: https://www.coinapi.io/docs
+## Technologies Used
+
+- Flutter (Dart)
+- GetX for state management
+- Dio for API calls
+- GetStorage for local storage
+- Responsive design following Material Design guidelines
+- Custom UI components using Flutter's built-in widgets
+
+## API Resources
+
+- **Exchange Rates**: [ExchangeRate Host](https://exchangerate.host)
+- **Crypto Assets**: [CoinAPI](https://www.coinapi.io)
+  or [CryptoAPI](https://developers.cryptoapis.io)
+
+## Project Structure
+
+The app follows a clean architecture with the following structure:
+
+lib/
+├── controllers/ # GetX Controllers
+├── models/ # Data Models
+├── services/ # API Handling
+├── views/ # UI Pages
+│ ├── home_screen.dart
+│ ├── trade_screen.dart
+│ └── login_modal.dart
+└── main.dart # Entry Point
+
+## Setup Instructions
+
+To run this project on your local machine, follow these steps:
+
+1. **Clone the repository**:
+   bash
+   git clone https://github.com/shikiwiki/aab_crypto_app.git
+   cd aab_crypto_app
+2. **Install Flutter** (if you haven’t already):
+
+   Follow the instructions from
+   the [Flutter installation guide](https://flutter.dev/docs/get-started/install).
+
+3. **Install Dependencies**:
+
+   Ensure you have the latest version of the Dart SDK, then run:
+
+bash
+flutter pub get
+
+4. **Run the App**:
+
+   Connect your device or start an emulator, then execute:
+
+bash
+flutter run
+
+## Technologies Used in `pubspec.yaml`
+
+The project uses the following dependencies:
+
+yaml
+name: aab_crypto_app
+description: "A new Flutter project."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+sdk: ^3.5.3
+dependencies:
+flutter:
+sdk: flutter
+get: ^4.6.6
+dio: ^5.7.0
+json_annotation: ^4.9.0
+json_serializable: ^6.8.0
+get_storage: ^2.1.1
+crypto: ^3.0.5
+
+dev_dependencies:
+flutter_test:
+sdk: flutter
+flutter_lints: ^4.0.0
+
+flutter:
+uses-material-design: true
+generate: true
+
+## Contribution
+
+This project is a solo effort. However, any contributions or suggestions are welcome. Please open an
+issue for any changes or features you would like to propose.
+
+## Acknowledgments
+
+- [Flutter Documentation](https://flutter.dev/docs)
+- [GetX Package](https://pub.dev/packages/get)
+- [Dio Package](https://pub.dev/packages/dio)
+- [CoinAPI Documentation](https://www.coinapi.io/docs)
