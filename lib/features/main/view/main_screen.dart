@@ -22,12 +22,12 @@ class MainScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(AppConstants.title),
-          backgroundColor: Colors.yellow,
+          backgroundColor: const Color(0xFF8A1538),
           toolbarHeight: AppConstants.toolBarHeight,
           bottom: const TabBar(
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.home)),
-              Tab(icon: Icon(Icons.attach_money_sharp)),
+              Tab(icon: Icon(Icons.home, color: Colors.white)),
+              Tab(icon: Icon(Icons.attach_money_sharp, color: Colors.white)),
             ],
           ),
           actions: [

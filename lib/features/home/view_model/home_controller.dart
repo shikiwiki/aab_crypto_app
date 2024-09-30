@@ -14,7 +14,7 @@ class HomeController extends GetxController {
 
   final Dio dio = Dio()
     ..options.headers['Content-Type'] = AppConstants.contentType
-    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey2;
+    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
 
   @override
   void onInit() {

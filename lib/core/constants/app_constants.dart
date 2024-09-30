@@ -1,8 +1,8 @@
 abstract class AppConstants {
   static const title = 'Crypto App';
-  static const apiKey = '7563D6EA-4C68-4F90-A0F6-B0AD83E7ADDB';
-  static const apiKey2 = '6beab760-8ff2-4463-a0eb-821bffda152c';
-  static const apiKey3 = '0f157cae-6ce1-4ada-9442-9a6f86598862';
+  static const apiKey1 = '7563D6EA-4C68-4F90-A0F6-B0AD83E7ADDB';
+  static const apiKey = '6beab760-8ff2-4463-a0eb-821bffda152c';
+  static const apiKey2 = '0f157cae-6ce1-4ada-9442-9a6f86598862';
   static const baseUrl = 'https://rest.coinapi.io';
   static const home = 'Home';
   static const trade = 'Trade';
@@ -33,7 +33,8 @@ abstract class AppConstants {
   static const zero = 0;
   static const int one = 1;
   static const int ten = 10;
-  static const int initialTabIndex = 0;
+
+  static const int initialTabIndex = zero;
   static const int tabsCount = 2;
   static const double toolBarHeight = 30;
 
