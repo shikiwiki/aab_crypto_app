@@ -1,4 +1,6 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/core/ui_kit/colors/app_colors.dart';
 import 'package:aab_crypto_app/features/home/view/home_screen.dart';
 import 'package:aab_crypto_app/features/main/view/log_in_modal.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
@@ -7,16 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class MainScreen extends StatelessWidget {
-  final MainController controller = Get.put(MainController());
-
-  MainScreen({super.key}) {
-    controller.loadLoginState();
-  }
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final MainController controller = Get.find<MainController>();
+
     return DefaultTabController(
-      initialIndex: AppConstants.initialTabIndex,
       length: AppConstants.tabsCount,
       child: Scaffold(
         appBar: AppBar(
@@ -24,21 +23,21 @@ class MainScreen extends StatelessWidget {
             return Text(
               controller.isLoggedIn.value
                   ? controller.userEmail.value
-                  : AppConstants.title,
+                  : AppStrings.title,
             );
           }),
-          foregroundColor: AppConstants.secondaryColor,
-          backgroundColor: AppConstants.primaryColor,
+          foregroundColor: AppColors.secondaryColor,
+          backgroundColor: AppColors.primaryColor,
           toolbarHeight: AppConstants.toolBarHeight,
           bottom: const TabBar(
-            indicatorColor: AppConstants.secondaryColor,
+            indicatorColor: AppColors.secondaryColor,
             indicatorSize: TabBarIndicatorSize.tab,
             indicatorWeight: AppConstants.indicatorWeight,
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.home, color: AppConstants.secondaryColor)),
+              Tab(icon: Icon(Icons.home, color: AppColors.secondaryColor)),
               Tab(
                   icon: Icon(Icons.attach_money_sharp,
-                      color: AppConstants.secondaryColor))
+                      color: AppColors.secondaryColor))
             ],
           ),
           actions: [
@@ -57,7 +56,7 @@ class MainScreen extends StatelessWidget {
             })
           ],
         ),
-        body: TabBarView(
+        body: const TabBarView(
           children: <Widget>[
             HomeScreen(),
             TradeScreen(),
@@ -71,7 +70,7 @@ class MainScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return LogInModal();
+        return const LogInModal();
       },
     );
   }

@@ -1,17 +1,21 @@
-import 'package:aab_crypto_app/core/api/api_provider.dart';
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
-import 'package:aab_crypto_app/features/home/view_model/models/asset.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/features/home/models/asset_model.dart';
+import 'package:aab_crypto_app/features/home/services/home_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
-  var assets = <Asset>[].obs;
-  var displayAssets = <Asset>[].obs;
+  var assets = <AssetModel>[].obs;
+  var displayAssets = <AssetModel>[].obs;
   var displaySize = AppConstants.ten;
   var iconUrls = <String, String>{}.obs;
-  var sortingCriteria = AppConstants.empty.obs;
+  var sortingCriteria = AppStrings.empty.obs;
   var isLoading = false.obs;
-  final ApiProvider apiProvider = Get.put(ApiProvider());
+
+  final HomeService homeService;
+
+  HomeController(this.homeService);
 
   @override
   void onInit() {
@@ -35,13 +39,13 @@ class HomeController extends GetxController {
   }
 
   void sortByCriteria() {
-    if (sortingCriteria.value == AppConstants.name) {
+    if (sortingCriteria.value == AppStrings.name) {
       assets.sort((a, b) => (a.name.trim()).compareTo((b.name.trim())));
-    } else if (sortingCriteria.value == AppConstants.price) {
+    } else if (sortingCriteria.value == AppStrings.price) {
       assets.sort((a, b) => (b.price!).compareTo(a.price!));
-    } else if (sortingCriteria.value == AppConstants.nameReversed) {
+    } else if (sortingCriteria.value == AppStrings.nameReversed) {
       assets.sort((a, b) => (b.name.trim()).compareTo((a.name.trim())));
-    } else if (sortingCriteria.value == AppConstants.priceReversed) {
+    } else if (sortingCriteria.value == AppStrings.priceReversed) {
       assets.sort((a, b) => (a.price!).compareTo(b.price!));
     }
     displayAssets.clear();
@@ -50,21 +54,20 @@ class HomeController extends GetxController {
 
   Future<void> fetchAssets() async {
     try {
-      final response =
-          await apiProvider.getDio().get(AppConstants.assetsEndpoint);
+      final response = await homeService.fetchAssets();
 
       if (response.statusCode == AppConstants.codeOk) {
-        List<Asset> allAssets = (response.data as List)
-            .map((json) => Asset.fromJson(json))
+        List<AssetModel> allAssets = (response.data as List)
+            .map((json) => AssetModel.fromJson(json))
             .toList();
-        List<Asset> filteredItems = [];
+        List<AssetModel> filteredItems = [];
         for (var asset in allAssets) {
           if (asset.isCrypto && asset.price != null) filteredItems.add(asset);
         }
         assets.assignAll(filteredItems);
         displayAssets.assignAll(assets.take(displaySize));
       } else {
-        throw Exception(AppConstants.fetchAssetsExceptionMessage);
+        throw Exception(AppStrings.fetchAssetsExceptionMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -75,18 +78,18 @@ class HomeController extends GetxController {
 
   Future<void> fetchIcons() async {
     try {
-      final response =
-          await apiProvider.getDio().get(AppConstants.iconsEndpoint);
+      final response = await homeService.fetchIcons();
 
       if (response.statusCode == AppConstants.codeOk) {
         final List<dynamic> data = response.data;
         for (var asset in data) {
-          if (asset[AppConstants.assetId] != null && asset[AppConstants.url] != null) {
-            iconUrls[asset[AppConstants.assetId]] = asset[AppConstants.url];
+          if (asset[AppStrings.assetId] != null &&
+              asset[AppStrings.url] != null) {
+            iconUrls[asset[AppStrings.assetId]] = asset[AppStrings.url];
           }
         }
       } else {
-        throw Exception(AppConstants.fetchIconsExceptionMessage);
+        throw Exception(AppStrings.fetchIconsExceptionMessage);
       }
     } catch (e) {
       debugPrint(e.toString());

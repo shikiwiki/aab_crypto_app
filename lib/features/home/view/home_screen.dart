@@ -1,24 +1,29 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
-import 'package:aab_crypto_app/core/widgets/asset_widget.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/core/ui_kit/widgets/asset_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class HomeScreen extends StatelessWidget {
-  final HomeController controller = Get.put(HomeController());
-
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
+    final HomeController controller = Get.find<HomeController>();
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              hint: const Text(AppConstants.sortBy),
-              items: <String>[AppConstants.name, AppConstants.price]
+              hint: const Text(AppStrings.sortBy),
+              items: <String>[AppStrings.name, AppStrings.price]
                   .map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -43,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             if (controller.assets.isEmpty) {
-              return const Center(child: Text(AppConstants.noItemsFound));
+              return const Center(child: Text(AppStrings.noItemsFound));
             }
             return RefreshIndicator(
               onRefresh: controller.fetchAssets,
@@ -59,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                   } else {
                     return TextButton(
                       onPressed: controller.showMoreItems,
-                      child: const Text(AppConstants.more),
+                      child: const Text(AppStrings.more),
                     );
                   }
                 },

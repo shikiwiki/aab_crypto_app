@@ -1,34 +1,32 @@
-import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/features/main/services/main_service.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class MainController extends GetxController {
   var isLoggedIn = false.obs;
-  var userEmail = AppConstants.empty.obs;
+  var userEmail = AppStrings.empty.obs;
+  final MainService mainService;
 
-  // void toggleLogin() {
-  //   isLoggedIn.value = !isLoggedIn.value;
-  //   final storage = GetStorage();
-  //   storage.write(AppConstants.isLoggedIn, isLoggedIn.value);
-  // }
+  MainController(this.mainService);
 
   void login(String email, String password) {
     isLoggedIn.value = true;
-    userEmail.value = email; // Set the user email
+    userEmail.value = email;
     final storage = GetStorage();
-    storage.write(AppConstants.isLoggedIn, true);
-    storage.write(AppConstants.userEmailKey, userEmail.value);
+    storage.write(AppStrings.isLoggedIn, true);
+    storage.write(AppStrings.userEmailKey, userEmail.value);
   }
 
   void loadLoginState() {
     final storage = GetStorage();
-    isLoggedIn.value = storage.read(AppConstants.isLoggedIn) ?? false;
+    isLoggedIn.value = storage.read(AppStrings.isLoggedIn) ?? false;
   }
 
   void logout() {
     isLoggedIn.value = false;
     final storage = GetStorage();
-    storage.remove(AppConstants.isLoggedIn);
-    Get.snackbar(AppConstants.loggedOut, AppConstants.loggedOutMessage);
+    storage.remove(AppStrings.isLoggedIn);
+    Get.snackbar(AppStrings.loggedOut, AppStrings.loggedOutMessage);
   }
 }

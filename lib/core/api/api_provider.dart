@@ -1,5 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:dio/dio.dart';
 
 class ApiProvider {
   final Dio dio;

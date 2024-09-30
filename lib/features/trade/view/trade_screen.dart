@@ -1,19 +1,31 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:aab_crypto_app/features/trade/view_model/trade_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class TradeScreen extends StatelessWidget {
-  final TradeController tradeController = Get.put(TradeController());
+class TradeScreen extends StatefulWidget {
+  const TradeScreen({super.key});
+
+  @override
+  State<TradeScreen> createState() => _TradeScreenState();
+}
+
+class _TradeScreenState extends State<TradeScreen> {
+  final TradeController tradeController = Get.find<TradeController>();
+
   final TextEditingController cryptoAmountController = TextEditingController();
 
-  TradeScreen({super.key}) {
+  @override
+  void initState() {
+    super.initState();
+
     cryptoAmountController.text = tradeController.cryptoAmount.toString();
 
     cryptoAmountController.addListener(() {
-      String correctValue =
-          cryptoAmountController.text.replaceAll(RegExp(r'[^0-9.]'), '');
+      String correctValue = cryptoAmountController.text
+          .replaceAll(RegExp(r'[^0-9.]'), AppStrings.empty);
       if (correctValue.isNotEmpty &&
           correctValue.split('.').length <= AppConstants.two) {
         tradeController.cryptoAmount =
@@ -24,12 +36,19 @@ class TradeScreen extends StatelessWidget {
   }
 
   @override
+  void dispose() {
+    tradeController.dispose();
+    cryptoAmountController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Obx(() {
       final isLoggedIn = Get.find<MainController>().isLoggedIn.value;
 
       if (!isLoggedIn) {
-        return const Center(child: Text(AppConstants.noAccessMessage));
+        return const Center(child: Text(AppStrings.noAccessMessage));
       }
       if (cryptoAmountController.text !=
           tradeController.cryptoAmount.toString()) {
@@ -41,7 +60,7 @@ class TradeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              hint: const Text(AppConstants.selectAsset),
+              hint: const Text(AppStrings.selectAsset),
               value: tradeController.currentAsset.value.name.isNotEmpty
                   ? tradeController.currentAsset.value.name
                   : null,
@@ -60,12 +79,12 @@ class TradeScreen extends StatelessWidget {
             TextField(
               controller: cryptoAmountController,
               decoration:
-                  const InputDecoration(labelText: AppConstants.cryptoAmount),
+                  const InputDecoration(labelText: AppStrings.cryptoAmount),
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               onTap: () {
                 if (cryptoAmountController.text.isEmpty ||
-                    cryptoAmountController.text == AppConstants.zeroString) {
+                    cryptoAmountController.text == AppStrings.zeroString) {
                   cryptoAmountController.clear();
                 }
               },
@@ -73,7 +92,7 @@ class TradeScreen extends StatelessWidget {
             const SizedBox(height: AppConstants.separatorSize),
             TextField(
               decoration:
-                  const InputDecoration(labelText: AppConstants.fiatAmount),
+                  const InputDecoration(labelText: AppStrings.fiatAmount),
               textAlign: TextAlign.center,
               readOnly: true,
               controller: TextEditingController(
@@ -86,7 +105,7 @@ class TradeScreen extends StatelessWidget {
               onPressed: () {
                 tradeController.swapFields();
               },
-              child: const Text(AppConstants.swap),
+              child: const Text(AppStrings.swap),
             ),
           ],
         ),
