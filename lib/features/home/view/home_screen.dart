@@ -56,10 +56,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: controller.displayAssets.length + AppConstants.one,
                 itemBuilder: (context, index) {
                   if (index < controller.displayAssets.length) {
+                    final asset = controller.displayAssets[index];
+
                     return AssetWidget(
-                      asset: controller.displayAssets[index],
-                      iconUrl: controller
-                          .iconUrls[controller.displayAssets[index].assetId],
+                      key: ValueKey(asset.assetId), // Using ValueKey for unique identification
+                      asset: asset,
+                      iconUrl: controller.iconUrls[asset.assetId],
                     );
                   } else {
                     return TextButton(
