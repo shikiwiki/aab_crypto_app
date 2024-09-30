@@ -1,4 +1,5 @@
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/core/utils/enums/option.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class AssetWidget extends StatefulWidget {
 }
 
 class _AssetWidgetState extends State<AssetWidget> {
-  String? _selectedAction;
+  Option? _selectedAction;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +30,16 @@ class _AssetWidgetState extends State<AssetWidget> {
       subtitle: (widget.asset.price != null)
           ? Text('${widget.asset.price} USD')
           : const SizedBox.shrink(),
-      trailing: DropdownButton<String>(
+      trailing: DropdownButton<Option>(
         hint: const Text(AppStrings.select),
         value: _selectedAction,
-        items: <String>[AppStrings.buy, AppStrings.sell].map((String value) {
-          return DropdownMenuItem<String>(
+        items: Option.values.map((Option value) {
+          return DropdownMenuItem<Option>(
             value: value,
-            child: Text(value),
+            child: Text(value.name),
           );
         }).toList(),
-        onChanged: (String? newValue) {
+        onChanged: (Option? newValue) {
           setState(() {
             _selectedAction = newValue;
           });

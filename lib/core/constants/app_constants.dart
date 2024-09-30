@@ -1,6 +1,6 @@
 abstract class AppConstants {
   static const apiKeyHeader = 'X-CoinAPI-Key';
-  static const apiKey = '6beab760-8ff2-4463-a0eb-821bffda152c';
+  static const apiKey = 'cdf5d255-aec7-4f85-9560-ee5ac6a7b00b';
   static const contentTypeHeader = 'Content-Type';
   static const contentType = 'application/json';
   static const baseUrl = 'https://rest.coinapi.io';

@@ -13,9 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final HomeController controller = Get.find<HomeController>();
+
   @override
   Widget build(BuildContext context) {
-    final HomeController controller = Get.find<HomeController>();
     return Column(
       children: [
         Row(
@@ -33,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onChanged: (value) {
                 if (value != null) {
                   controller.sortingCriteria.value =
-                      controller.sortingCriteria.value == value
-                          ? '${value}Reversed'
-                          : value;
+                  controller.sortingCriteria.value == value
+                      ? '${value}Reversed'
+                      : value;
                   controller.sortByCriteria();
                 }
               },
@@ -57,9 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   if (index < controller.displayAssets.length) {
                     final asset = controller.displayAssets[index];
-
                     return AssetWidget(
-                      key: ValueKey(asset.assetId), // Using ValueKey for unique identification
+                      key: ValueKey(asset.assetId),
                       asset: asset,
                       iconUrl: controller.iconUrls[asset.assetId],
                     );
