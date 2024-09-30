@@ -1,23 +1,20 @@
+import 'package:aab_crypto_app/core/api/api_provider.dart';
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/features/home/view_model/models/asset.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class TradeController extends GetxController {
-  var fiatAmount = 0.0.obs;
+  var fiatAmount = AppConstants.zero.obs;
   var currentAsset = Asset.empty().obs;
   var cryptoAssets = <Asset>[].obs;
-  num cryptoAmount = 0;
-
-  final Dio dio = Dio()
-    ..options.headers[AppConstants.contentTypeHeader] = AppConstants.contentType
-    ..options.headers[AppConstants.apiKeyHeader] = AppConstants.apiKey;
+  num cryptoAmount = AppConstants.zero;
+  final ApiProvider apiProvider = Get.put(ApiProvider());
 
   @override
   void onInit() {
     super.onInit();
-    fetchCryptoAssets();
+    fetchAssets();
   }
 
   void selectItem(String name) {
@@ -29,22 +26,20 @@ class TradeController extends GetxController {
     calculateFiatAmount();
   }
 
-  Future<void> fetchCryptoAssets() async {
+  Future<void> fetchAssets() async {
     try {
-      final response = await dio.get('${AppConstants.baseUrl}/v1/assets');
+      final response =
+          await apiProvider.getDio().get(AppConstants.assetsEndpoint);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == AppConstants.codeOk) {
         List<Asset> allAssets = (response.data as List)
             .map((json) => Asset.fromJson(json))
             .toList();
-        List<Asset> cryptoItems = [];
         for (var asset in allAssets) {
-          if (asset.isCrypto) cryptoItems.add(asset);
+          if (asset.isCrypto && asset.price != null) cryptoAssets.add(asset);
         }
-        cryptoAssets.value =
-            cryptoItems.where((asset) => asset.price != null).toList();
       } else {
-        throw Exception('Failed to load assets');
+        throw Exception(AppConstants.fetchAssetsExceptionMessage);
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -62,11 +57,13 @@ class TradeController extends GetxController {
   }
 
   void swapFields() {
-    if (currentAsset.value.price != null && currentAsset.value.price! > 0) {
-      if (fiatAmount.value > 0) {
-        cryptoAmount = fiatAmount.value;
+    if (currentAsset.value.price != null && currentAsset.value.price! > AppConstants.zero) {
+      if (fiatAmount.value > AppConstants.zero) {
+        cryptoAmount =
+            num.tryParse(fiatAmount.value.toStringAsFixed(AppConstants.two)) ??
+                AppConstants.zero;
       } else {
-        cryptoAmount = 0.0;
+        cryptoAmount = AppConstants.zero;
       }
     }
     calculateFiatAmount();

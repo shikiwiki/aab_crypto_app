@@ -26,42 +26,41 @@ class HomeScreen extends StatelessWidget {
                 );
               }).toList(),
               onChanged: (value) {
-                if (controller.sortingCriteria.value == value) {
-                  controller.sortingCriteria.value = '${value!}Reversed';
-                } else {
-                  controller.sortingCriteria.value = value!;
+                if (value != null) {
+                  controller.sortingCriteria.value =
+                      controller.sortingCriteria.value == value
+                          ? AppConstants.reversed(value)
+                          : value;
+                  controller.sortByCriteria();
                 }
-                controller.sortByCriteria();
               },
             ),
           ],
         ),
         Expanded(
           child: Obx(() {
-            if (controller.assets.isEmpty && !controller.isLoading.value) {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (controller.assets.isEmpty) {
               return const Center(child: Text(AppConstants.noItemsFound));
             }
             return RefreshIndicator(
-              onRefresh: () async {
-                debugPrint('REFRESHING');
-                await controller.fetchAssets();
-              },
+              onRefresh: controller.fetchAssets,
               child: ListView.builder(
                 itemCount: controller.displayAssets.length + AppConstants.one,
                 itemBuilder: (context, index) {
                   if (index < controller.displayAssets.length) {
                     return AssetWidget(
-                      asset: controller.assets[index],
-                      iconUrl:
-                          controller.iconUrls[controller.assets[index].assetId],
+                      asset: controller.displayAssets[index],
+                      iconUrl: controller
+                          .iconUrls[controller.displayAssets[index].assetId],
                     );
-                  } else if (!controller.isLoading.value) {
+                  } else {
                     return TextButton(
                       onPressed: controller.showMoreItems,
                       child: const Text(AppConstants.more),
                     );
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
                   }
                 },
               ),

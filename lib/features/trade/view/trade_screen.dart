@@ -26,7 +26,7 @@ class TradeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             DropdownButton<String>(
-              hint: const Text(AppConstants.chooseAsset),
+              hint: const Text(AppConstants.selectAsset),
               value: tradeController.currentAsset.value.name.isNotEmpty
                   ? tradeController.currentAsset.value.name
                   : null,
@@ -45,12 +45,12 @@ class TradeScreen extends StatelessWidget {
             TextField(
               controller: cryptoAmountController,
               decoration:
-                  const InputDecoration(labelText: AppConstants.cryptoAmount),
+              const InputDecoration(labelText: AppConstants.cryptoAmount),
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               onTap: () {
-                if (cryptoAmountController.text == AppConstants.zeroString ||
-                    cryptoAmountController.text.isEmpty) {
+                if (cryptoAmountController.text.isEmpty ||
+                    cryptoAmountController.text == AppConstants.zeroString) {
                   cryptoAmountController.clear();
                 }
               },
@@ -66,13 +66,13 @@ class TradeScreen extends StatelessWidget {
                 tradeController.calculateFiatAmount();
                 cryptoAmountController.text = correctValue;
                 cryptoAmountController.text =
-                    correctValue.isEmpty ? AppConstants.zeroString : correctValue;
+                correctValue.isEmpty ? AppConstants.zeroString : correctValue;
               },
             ),
             const SizedBox(height: AppConstants.separatorSize),
             TextField(
               decoration:
-                  const InputDecoration(labelText: AppConstants.fiatAmount),
+              const InputDecoration(labelText: AppConstants.fiatAmount),
               textAlign: TextAlign.center,
               readOnly: true,
               controller: TextEditingController(

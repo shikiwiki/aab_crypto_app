@@ -1,17 +1,14 @@
+import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../core/constants/app_constants.dart';
-
 class LogInModal extends StatelessWidget {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final MainController mainController = Get.find();
+  final MainController mainController = Get.find<MainController>();
 
   LogInModal({super.key});
-
-// //узнавать, авторизован ли - в гет сторадж
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +31,14 @@ class LogInModal extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            // Simulate a login, replace with actual authentication logic
-            if (emailController.text.isNotEmpty &&
-                passwordController.text.isNotEmpty) {
-              mainController.toggleLogin(); // Login state toggled
-              Get.back(); // Close the modal
+            final RegExp emailRegExp = RegExp(
+              r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
+            );
+            final RegExp passwordRegExp = RegExp(r'^[A-Za-z0-9.]+$');
+            if (emailRegExp.hasMatch(emailController.text) &&
+                passwordRegExp.hasMatch(passwordController.text)) {
+              mainController.toggleLogin();
+              Get.back();
               Get.snackbar(AppConstants.logIn, AppConstants.logInMessage);
             } else {
               Get.snackbar(AppConstants.error, AppConstants.errorMessage);
