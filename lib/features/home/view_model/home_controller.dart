@@ -25,7 +25,6 @@ class HomeController extends GetxController {
 
   Future<void> fetch() async {
     if (isLoading.value) return;
-    isLoading.value = true;
     fetchIcons();
     fetchAssets();
   }
@@ -53,6 +52,7 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchAssets() async {
+    isLoading.value = true;
     try {
       final response = await homeService.fetchAssets();
 
