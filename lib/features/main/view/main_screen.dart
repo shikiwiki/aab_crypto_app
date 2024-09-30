@@ -48,6 +48,8 @@ class MainScreen extends StatelessWidget {
                 onPressed: () {
                   if (controller.isLoggedIn.value) {
                     controller.logout();
+                    Get.snackbar(
+                        AppStrings.loggedOut, AppStrings.loggedOutMessage);
                   } else {
                     _showLoginModal(context);
                   }
