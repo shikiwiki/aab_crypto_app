@@ -13,7 +13,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final HomeController controller = Get.find<HomeController>();
+  final HomeController homeController = Get.find<HomeController>();
+
+  @override
+  void dispose() {
+    homeController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +39,11 @@ class _HomeScreenState extends State<HomeScreen> {
               }).toList(),
               onChanged: (value) {
                 if (value != null) {
-                  controller.sortingCriteria.value =
-                  controller.sortingCriteria.value == value
-                      ? '${value}Reversed'
-                      : value;
-                  controller.sortByCriteria();
+                  homeController.sortingCriteria.value =
+                      homeController.sortingCriteria.value == value
+                          ? '${value}Reversed'
+                          : value;
+                  homeController.sortByCriteria();
                 }
               },
             ),
@@ -45,27 +51,28 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         Expanded(
           child: Obx(() {
-            if (controller.isLoading.value) {
+            if (homeController.isLoading.value) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (controller.assets.isEmpty) {
+            if (homeController.assets.isEmpty) {
               return const Center(child: Text(AppStrings.noItemsFound));
             }
             return RefreshIndicator(
-              onRefresh: controller.fetchAssets,
+              onRefresh: homeController.fetchAssets,
               child: ListView.builder(
-                itemCount: controller.displayAssets.length + AppConstants.one,
+                itemCount:
+                    homeController.displayAssets.length + AppConstants.one,
                 itemBuilder: (context, index) {
-                  if (index < controller.displayAssets.length) {
-                    final asset = controller.displayAssets[index];
+                  if (index < homeController.displayAssets.length) {
+                    final asset = homeController.displayAssets[index];
                     return AssetWidget(
                       key: ValueKey(asset.assetId),
                       asset: asset,
-                      iconUrl: controller.iconUrls[asset.assetId],
+                      iconUrl: homeController.iconUrls[asset.assetId],
                     );
                   } else {
                     return TextButton(
-                      onPressed: controller.showMoreItems,
+                      onPressed: homeController.showMoreItems,
                       child: const Text(AppStrings.more),
                     );
                   }

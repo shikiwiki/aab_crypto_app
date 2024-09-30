@@ -1,4 +1,5 @@
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/core/utils/extensions/string_helper.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,7 @@ class LogInModal extends StatefulWidget {
 
 class _LogInModalState extends State<LogInModal> {
   final emailController = TextEditingController();
-
   final passwordController = TextEditingController();
-
   final MainController mainController = Get.find<MainController>();
 
   @override
@@ -45,14 +44,8 @@ class _LogInModalState extends State<LogInModal> {
       actions: [
         TextButton(
           onPressed: () {
-            final RegExp emailRegExp = RegExp(
-              r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
-            );
-            final RegExp passwordRegExp = RegExp(r'^[A-Za-z0-9.]+$');
-
-            if (emailRegExp.hasMatch(emailController.text) &&
-                passwordRegExp.hasMatch(passwordController.text)) {
-              // Call the login method and pass the email and password
+            if (emailController.text.isValidEmail &&
+                passwordController.text.isValidPassword) {
               mainController.login(
                   emailController.text, passwordController.text);
               Get.back();

@@ -1,5 +1,6 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
+import 'package:aab_crypto_app/core/utils/extensions/string_helper.dart';
 import 'package:aab_crypto_app/features/main/view_model/main_controller.dart';
 import 'package:aab_crypto_app/features/trade/view_model/trade_controller.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +25,7 @@ class _TradeScreenState extends State<TradeScreen> {
     cryptoAmountController.text = tradeController.cryptoAmount.toString();
 
     cryptoAmountController.addListener(() {
-      String correctValue = cryptoAmountController.text
-          .replaceAll(RegExp(r'[^0-9.]'), AppStrings.empty);
+      String correctValue = cryptoAmountController.text.cleanInput();
       if (correctValue.isNotEmpty &&
           correctValue.split('.').length <= AppConstants.two) {
         tradeController.cryptoAmount =
