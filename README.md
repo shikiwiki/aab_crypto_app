@@ -1,3 +1,4 @@
+
 The goal is to build a crypto trading app using Flutter, demonstrating knowledge of
 modern Flutter practices and state management using GetX.
 

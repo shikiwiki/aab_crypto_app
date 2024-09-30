@@ -24,6 +24,9 @@ class MainScreen extends StatelessWidget {
           backgroundColor: AppConstants.primaryColor,
           toolbarHeight: AppConstants.toolBarHeight,
           bottom: const TabBar(
+            indicatorColor: AppConstants.secondaryColor,
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicatorWeight: AppConstants.indicatorWeight,
             tabs: <Widget>[
               Tab(icon: Icon(Icons.home, color: AppConstants.secondaryColor)),
               Tab(
@@ -33,7 +36,6 @@ class MainScreen extends StatelessWidget {
           ),
           actions: [
             Obx(() {
-              // if (!controller.isLoggedIn.value) {
               return IconButton(
                 icon: Icon(
                     controller.isLoggedIn.value ? Icons.logout : Icons.login),

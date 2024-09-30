@@ -54,6 +54,7 @@ abstract class AppConstants {
   static const int codeOk = 200;
 
   static const int initialTabIndex = 0;
+  static const double indicatorWeight = 4;
   static const int tabsCount = 2;
   static const double toolBarHeight = 30;
 

@@ -8,7 +8,20 @@ class TradeScreen extends StatelessWidget {
   final TradeController tradeController = Get.put(TradeController());
   final TextEditingController cryptoAmountController = TextEditingController();
 
-  TradeScreen({super.key});
+  TradeScreen({super.key}) {
+    cryptoAmountController.text = tradeController.cryptoAmount.toString();
+
+    cryptoAmountController.addListener(() {
+      String correctValue =
+          cryptoAmountController.text.replaceAll(RegExp(r'[^0-9.]'), '');
+      if (correctValue.isNotEmpty &&
+          correctValue.split('.').length <= AppConstants.two) {
+        tradeController.cryptoAmount =
+            num.tryParse(correctValue) ?? AppConstants.zero;
+      }
+      tradeController.calculateFiatAmount();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +31,10 @@ class TradeScreen extends StatelessWidget {
       if (!isLoggedIn) {
         return const Center(child: Text(AppConstants.noAccessMessage));
       }
-      cryptoAmountController.text = tradeController.cryptoAmount.toString();
-
+      if (cryptoAmountController.text !=
+          tradeController.cryptoAmount.toString()) {
+        cryptoAmountController.text = tradeController.cryptoAmount.toString();
+      }
       return Padding(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
         child: Column(
@@ -45,7 +60,7 @@ class TradeScreen extends StatelessWidget {
             TextField(
               controller: cryptoAmountController,
               decoration:
-              const InputDecoration(labelText: AppConstants.cryptoAmount),
+                  const InputDecoration(labelText: AppConstants.cryptoAmount),
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               onTap: () {
@@ -54,29 +69,16 @@ class TradeScreen extends StatelessWidget {
                   cryptoAmountController.clear();
                 }
               },
-              onChanged: (value) {
-                String correctValue = value.replaceAll(RegExp(r'[^0-9.]'), AppConstants.empty);
-                if (correctValue.isNotEmpty &&
-                    correctValue.split('.').length <= 2) {
-                  tradeController.cryptoAmount =
-                      num.tryParse(correctValue) ?? AppConstants.zero;
-                } else {
-                  tradeController.cryptoAmount = AppConstants.zero;
-                }
-                tradeController.calculateFiatAmount();
-                cryptoAmountController.text = correctValue;
-                cryptoAmountController.text =
-                correctValue.isEmpty ? AppConstants.zeroString : correctValue;
-              },
             ),
             const SizedBox(height: AppConstants.separatorSize),
             TextField(
               decoration:
-              const InputDecoration(labelText: AppConstants.fiatAmount),
+                  const InputDecoration(labelText: AppConstants.fiatAmount),
               textAlign: TextAlign.center,
               readOnly: true,
               controller: TextEditingController(
-                text: tradeController.fiatAmount.value.toStringAsFixed(AppConstants.two),
+                text: tradeController.fiatAmount.value
+                    .toStringAsFixed(AppConstants.two),
               ),
             ),
             const SizedBox(height: AppConstants.separatorSize),
