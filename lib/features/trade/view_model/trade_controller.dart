@@ -11,8 +11,8 @@ class TradeController extends GetxController {
   num cryptoAmount = 0;
 
   final Dio dio = Dio()
-    ..options.headers['Content-Type'] = AppConstants.contentType
-    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
+    ..options.headers[AppConstants.contentTypeHeader] = AppConstants.contentType
+    ..options.headers[AppConstants.apiKeyHeader] = AppConstants.apiKey;
 
   @override
   void onInit() {
@@ -62,8 +62,13 @@ class TradeController extends GetxController {
   }
 
   void swapFields() {
-    // var temp = cryptoAmount.value;
-    // cryptoAmount.value = fiatAmount.value == 0 ? 0.0 : (fiatAmount.value / getSelectedCryptoPrice());
-    // fiatAmount.value = temp * getSelectedCryptoPrice();
+    if (currentAsset.value.price != null && currentAsset.value.price! > 0) {
+      if (fiatAmount.value > 0) {
+        cryptoAmount = fiatAmount.value;
+      } else {
+        cryptoAmount = 0.0;
+      }
+    }
+    calculateFiatAmount();
   }
 }

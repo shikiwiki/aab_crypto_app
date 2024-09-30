@@ -1,8 +1,7 @@
 abstract class AppConstants {
   static const title = 'Crypto App';
-  static const apiKey1 = '7563D6EA-4C68-4F90-A0F6-B0AD83E7ADDB';
   static const apiKey = '6beab760-8ff2-4463-a0eb-821bffda152c';
-  static const apiKey2 = '0f157cae-6ce1-4ada-9442-9a6f86598862';
+  static const apiKeyHeader = 'X-CoinAPI-Key';
   static const baseUrl = 'https://rest.coinapi.io';
   static const home = 'Home';
   static const trade = 'Trade';
@@ -14,6 +13,7 @@ abstract class AppConstants {
   static const price = 'price';
   static const priceReversed = 'priceReversed';
   static const cryptoAmount = 'Crypto Amount';
+  static const zeroString = '0';
   static const fiatAmount = 'Fiat Amount (USD)';
   static const swap = 'Swap';
   static const noAccessMessage = 'Please log in to access this page.';
@@ -23,6 +23,7 @@ abstract class AppConstants {
   static const logInMessage = 'You logged in successfully!';
   static const error = 'Error';
   static const errorMessage = 'Please, input correct data.';
+  static const contentTypeHeader = 'Content-Type';
   static const contentType = 'application/json';
   static const select = 'Select';
   static const buy = 'Buy';
@@ -30,11 +31,12 @@ abstract class AppConstants {
   static const sortBy = 'Sort by';
   static const chooseAsset = 'Choose asset';
 
-  static const zero = 0;
+  static const num zero = 0;
   static const int one = 1;
+  static const int two = 2;
   static const int ten = 10;
 
-  static const int initialTabIndex = zero;
+  static const int initialTabIndex = 0;
   static const int tabsCount = 2;
   static const double toolBarHeight = 30;
 

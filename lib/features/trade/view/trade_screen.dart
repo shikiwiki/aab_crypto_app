@@ -49,18 +49,24 @@ class TradeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               keyboardType: TextInputType.number,
               onTap: () {
-                if (cryptoAmountController.text == '0.0' ||
+                if (cryptoAmountController.text == AppConstants.zeroString ||
                     cryptoAmountController.text.isEmpty) {
                   cryptoAmountController.clear();
                 }
               },
               onChanged: (value) {
-                if (value.isNotEmpty) {
-                  tradeController.cryptoAmount = num.tryParse(value) ?? 0;
-                  tradeController.calculateFiatAmount();
+                String correctValue = value.replaceAll(RegExp(r'[^0-9.]'), AppConstants.empty);
+                if (correctValue.isNotEmpty &&
+                    correctValue.split('.').length <= 2) {
+                  tradeController.cryptoAmount =
+                      num.tryParse(correctValue) ?? AppConstants.zero;
                 } else {
-                  tradeController.cryptoAmount = 0;
+                  tradeController.cryptoAmount = AppConstants.zero;
                 }
+                tradeController.calculateFiatAmount();
+                cryptoAmountController.text = correctValue;
+                cryptoAmountController.text =
+                    correctValue.isEmpty ? AppConstants.zeroString : correctValue;
               },
             ),
             const SizedBox(height: AppConstants.separatorSize),
@@ -70,7 +76,7 @@ class TradeScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               readOnly: true,
               controller: TextEditingController(
-                text: tradeController.fiatAmount.value.toStringAsFixed(2),
+                text: tradeController.fiatAmount.value.toStringAsFixed(AppConstants.two),
               ),
             ),
             const SizedBox(height: AppConstants.separatorSize),

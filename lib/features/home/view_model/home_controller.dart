@@ -13,8 +13,8 @@ class HomeController extends GetxController {
   var isLoading = false.obs;
 
   final Dio dio = Dio()
-    ..options.headers['Content-Type'] = AppConstants.contentType
-    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
+    ..options.headers[AppConstants.contentTypeHeader] = AppConstants.contentType
+    ..options.headers[AppConstants.apiKeyHeader] = AppConstants.apiKey;
 
   @override
   void onInit() {
@@ -56,8 +56,9 @@ class HomeController extends GetxController {
       final response = await dio.get('${AppConstants.baseUrl}/v1/assets');
 
       if (response.statusCode == 200) {
-        List<Asset> allAssets =
-        (response.data as List).map((json) => Asset.fromJson(json)).toList();
+        List<Asset> allAssets = (response.data as List)
+            .map((json) => Asset.fromJson(json))
+            .toList();
         List<Asset> cryptoItems = [];
         for (var asset in allAssets) {
           if (asset.isCrypto && asset.price != null) cryptoItems.add(asset);
