@@ -12,7 +12,7 @@ class TradeController extends GetxController {
 
   final Dio dio = Dio()
     ..options.headers['Content-Type'] = AppConstants.contentType
-    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
+    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey2;
 
   @override
   void onInit() {

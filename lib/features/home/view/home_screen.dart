@@ -25,7 +25,12 @@ class HomeScreen extends StatelessWidget {
                   child: Text(value),
                 );
               }).toList(),
-              onChanged: (_) {
+              onChanged: (value) {
+                if (controller.sortingCriteria.value == value) {
+                  controller.sortingCriteria.value = '${value!}Reversed';
+                } else {
+                  controller.sortingCriteria.value = value!;
+                }
                 controller.sortByCriteria();
               },
             ),
@@ -38,7 +43,8 @@ class HomeScreen extends StatelessWidget {
             }
             return RefreshIndicator(
               onRefresh: () async {
-                await controller.fetch();
+                debugPrint('REFRESHING');
+                await controller.fetchAssets();
               },
               child: ListView.builder(
                 itemCount: controller.displayAssets.length + AppConstants.one,
@@ -46,7 +52,8 @@ class HomeScreen extends StatelessWidget {
                   if (index < controller.displayAssets.length) {
                     return AssetWidget(
                       asset: controller.assets[index],
-                      iconUrl: controller.iconUrls[controller.assets[index].assetId],
+                      iconUrl:
+                          controller.iconUrls[controller.assets[index].assetId],
                     );
                   } else if (!controller.isLoading.value) {
                     return TextButton(

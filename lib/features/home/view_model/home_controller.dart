@@ -9,12 +9,12 @@ class HomeController extends GetxController {
   var displayAssets = <Asset>[].obs;
   var displaySize = AppConstants.ten;
   var iconUrls = <String, String>{}.obs;
-  var sortingCriteria = AppConstants.name.obs;
+  var sortingCriteria = AppConstants.empty.obs;
   var isLoading = false.obs;
 
   final Dio dio = Dio()
     ..options.headers['Content-Type'] = AppConstants.contentType
-    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey;
+    ..options.headers['X-CoinAPI-Key'] = AppConstants.apiKey2;
 
   @override
   void onInit() {
@@ -39,14 +39,16 @@ class HomeController extends GetxController {
 
   void sortByCriteria() {
     if (sortingCriteria.value == AppConstants.name) {
-      assets.sort((a, b) => a.name.compareTo(b.name));
+      assets.sort((a, b) => (a.name.trim()).compareTo((b.name.trim())));
     } else if (sortingCriteria.value == AppConstants.price) {
-      assets.sort((a, b) => (b.price ?? AppConstants.zero)
-          .compareTo(a.price ?? AppConstants.zero));
+      assets.sort((a, b) => (b.price!).compareTo(a.price!));
+    } else if (sortingCriteria.value == AppConstants.nameReversed) {
+      assets.sort((a, b) => (b.name.trim()).compareTo((a.name.trim())));
+    } else if (sortingCriteria.value == AppConstants.priceReversed) {
+      assets.sort((a, b) => (a.price!).compareTo(b.price!));
     }
     displayAssets.clear();
     displayAssets.value = assets.take(displaySize).toList();
-    // displayItems.assignAll(items.take(displaySize));
   }
 
   Future<void> fetchAssets() async {
@@ -55,10 +57,10 @@ class HomeController extends GetxController {
 
       if (response.statusCode == 200) {
         List<Asset> allAssets =
-            (response.data as List).map((json) => Asset.fromJson(json)).toList();
+        (response.data as List).map((json) => Asset.fromJson(json)).toList();
         List<Asset> cryptoItems = [];
         for (var asset in allAssets) {
-          if (asset.isCrypto) cryptoItems.add(asset);
+          if (asset.isCrypto && asset.price != null) cryptoItems.add(asset);
         }
         assets.assignAll(cryptoItems);
         displayAssets.assignAll(assets.take(displaySize));
