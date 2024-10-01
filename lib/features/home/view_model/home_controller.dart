@@ -52,20 +52,34 @@ class HomeController extends GetxController {
 
   Future<void> fetchAssets() async {
     isLoading.value = true;
-    final allAssets = await homeService.fetchAssets();
+    final result = await homeService.fetchAssets();
     List<AssetModel> filteredAssets = [];
-    for (var asset in allAssets) {
-      if (asset.isCrypto && asset.price != null) filteredAssets.add(asset);
-    }
-    assets.assignAll(filteredAssets);
-    displayAssets.assignAll(assets.take(displaySize));
+    result.fold(
+      (errorMessage) {
+        throw Exception(errorMessage);
+      },
+      (allAssets) {
+        for (var asset in allAssets) {
+          if (asset.isCrypto && asset.price != null) filteredAssets.add(asset);
+        }
+        assets.assignAll(filteredAssets);
+        displayAssets.assignAll(assets.take(displaySize));
+      },
+    );
     isLoading.value = false;
   }
 
   Future<void> fetchIcons() async {
-    final allIcons = await homeService.fetchIcons();
-    if (allIcons.isNotEmpty) {
-      iconUrls.value = allIcons;
-    }
+    final result = await homeService.fetchIcons();
+    result.fold(
+      (errorMessage) {
+        throw Exception(errorMessage);
+      },
+      (allIcons) {
+        if (allIcons.isNotEmpty) {
+          iconUrls.value = allIcons;
+        }
+      },
+    );
   }
 }

@@ -2,10 +2,10 @@ import 'package:aab_crypto_app/core/api/api_provider.dart';
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
-import 'package:flutter/foundation.dart';
+import 'package:dartz/dartz.dart';
 
 abstract interface class TradeService {
-  Future<List<AssetModel>> fetchAssets();
+  Future<Either<String, List<AssetModel>>> fetchAssets();
 }
 
 class TradeServiceImpl implements TradeService {
@@ -14,20 +14,19 @@ class TradeServiceImpl implements TradeService {
   TradeServiceImpl(this.apiProvider);
 
   @override
-  Future<List<AssetModel>> fetchAssets() async {
+  Future<Either<String, List<AssetModel>>> fetchAssets() async {
     try {
       final response =
           await apiProvider.getDio().get(AppConstants.assetsEndpoint);
       if (response.statusCode == AppConstants.codeOk) {
-        return (response.data as List)
+        return Right((response.data as List)
             .map((json) => AssetModel.fromJson(json))
-            .toList();
+            .toList());
       } else {
-        throw Exception(AppStrings.fetchAssetsExceptionMessage);
+        return const Left(AppStrings.fetchAssetsExceptionMessage);
       }
     } catch (e) {
-      debugPrint(e.toString());
+      return Left(e.toString());
     }
-    return List<AssetModel>.empty();
   }
 }

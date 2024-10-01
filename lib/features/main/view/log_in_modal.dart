@@ -15,6 +15,7 @@ class _LogInModalState extends State<LogInModal> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final MainController mainController = Get.find<MainController>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -27,27 +28,46 @@ class _LogInModalState extends State<LogInModal> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text(AppStrings.logIn),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: emailController,
-            decoration: const InputDecoration(labelText: AppStrings.email),
+      content: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextFormField(
+                controller: emailController,
+                decoration: const InputDecoration(labelText: AppStrings.email),
+                validator: (value) {
+                  if (value == null || !value.isValidEmail) {
+                    return AppStrings.invalidEmailMessage;
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: passwordController,
+                decoration:
+                    const InputDecoration(labelText: AppStrings.password),
+                obscureText: true,
+                validator: (value) {
+                  if (value == null || !value.isValidPassword) {
+                    return AppStrings.invalidPasswordMessage;
+                  }
+                  return null;
+                },
+              ),
+            ],
           ),
-          TextField(
-            controller: passwordController,
-            decoration: const InputDecoration(labelText: AppStrings.password),
-            obscureText: true,
-          ),
-        ],
+        ),
       ),
       actions: [
         TextButton(
           onPressed: () {
-            if (emailController.text.isValidEmail &&
-                passwordController.text.isValidPassword) {
+            if (_formKey.currentState!.validate()) {
               mainController.login(
                   emailController.text, passwordController.text);
+              emailController.clear();
+              passwordController.clear();
               Get.back();
               Get.snackbar(AppStrings.logIn, AppStrings.logInMessage);
             } else {

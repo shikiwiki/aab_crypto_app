@@ -28,13 +28,21 @@ class TradeController extends GetxController {
   }
 
   Future<void> fetchAssets() async {
-    final allAssets = await tradeService.fetchAssets();
-    for (var asset in allAssets) {
-      if (asset.isCrypto && asset.price != null) cryptoAssets.add(asset);
-    }
-    if (cryptoAssets.isNotEmpty) {
-      currentAsset.value = cryptoAssets.first;
-    }
+    final result = await tradeService.fetchAssets();
+    result.fold(
+      (errorMessage) {
+        currentAsset.value = AssetModel.empty();
+        throw Exception(errorMessage);
+      },
+      (allAssets) {
+        for (var asset in allAssets) {
+          if (asset.isCrypto && asset.price != null) cryptoAssets.add(asset);
+        }
+        if (cryptoAssets.isNotEmpty) {
+          currentAsset.value = cryptoAssets.first;
+        }
+      },
+    );
   }
 
   void calculateFiatAmount() {

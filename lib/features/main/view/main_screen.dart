@@ -18,46 +18,7 @@ class MainScreen extends StatelessWidget {
     return DefaultTabController(
       length: AppConstants.tabsCount,
       child: Scaffold(
-        appBar: AppBar(
-          title: Obx(() {
-            return Text(
-              controller.isLoggedIn.value
-                  ? controller.userEmail.value
-                  : AppStrings.title,
-            );
-          }),
-          foregroundColor: AppColors.secondaryColor,
-          backgroundColor: AppColors.primaryColor,
-          toolbarHeight: AppConstants.toolBarHeight,
-          bottom: const TabBar(
-            indicatorColor: AppColors.secondaryColor,
-            indicatorSize: TabBarIndicatorSize.tab,
-            indicatorWeight: AppConstants.indicatorWeight,
-            tabs: <Widget>[
-              Tab(icon: Icon(Icons.home, color: AppColors.secondaryColor)),
-              Tab(
-                  icon: Icon(Icons.attach_money_sharp,
-                      color: AppColors.secondaryColor))
-            ],
-          ),
-          actions: [
-            Obx(() {
-              return IconButton(
-                icon: Icon(
-                    controller.isLoggedIn.value ? Icons.logout : Icons.login),
-                onPressed: () {
-                  if (controller.isLoggedIn.value) {
-                    controller.logout();
-                    Get.snackbar(
-                        AppStrings.loggedOut, AppStrings.loggedOutMessage);
-                  } else {
-                    _showLoginModal(context);
-                  }
-                },
-              );
-            })
-          ],
-        ),
+        appBar: _buildAppBar(controller, context),
         body: const TabBarView(
           children: <Widget>[
             HomeScreen(),
@@ -66,6 +27,46 @@ class MainScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  AppBar _buildAppBar(MainController controller, BuildContext context) {
+    return AppBar(
+      title: Obx(() {
+        return Text(
+          controller.isLoggedIn.value
+              ? controller.userEmail.value
+              : AppStrings.title,
+        );
+      }),
+      foregroundColor: AppColors.secondaryColor,
+      backgroundColor: AppColors.primaryColor,
+      toolbarHeight: AppConstants.toolBarHeight,
+      bottom: const TabBar(
+        indicatorColor: AppColors.secondaryColor,
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicatorWeight: AppConstants.indicatorWeight,
+        tabs: <Widget>[
+          Tab(icon: Icon(Icons.home, color: AppColors.secondaryColor)),
+          Tab(
+              icon: Icon(Icons.attach_money_sharp,
+                  color: AppColors.secondaryColor)),
+        ],
+      ),
+      actions: [
+        _buildLoginButton(controller, context),
+      ],
+    );
+  }
+
+  Widget _buildLoginButton(MainController controller, BuildContext context) {
+    return Obx(() {
+      return controller.isLoggedIn.value
+          ? const SizedBox.shrink()
+          : IconButton(
+              icon: const Icon(Icons.login),
+              onPressed: () => _showLoginModal(context),
+            );
+    });
   }
 
   void _showLoginModal(BuildContext context) {
