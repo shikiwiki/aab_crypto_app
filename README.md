@@ -115,9 +115,7 @@ To run this project on your local machine, follow these steps:
    bash
    flutter run
 
-## Technologies Used in `pubspec.yaml`
-
-The project uses the following dependencies:
+## Technologies Used:
 
 * GetX;
 * Dio;
