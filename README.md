@@ -49,17 +49,29 @@ Every feature contains three layers:
 Example of home feature below:
 
 features
+
 ├── home
+
 │ ├── models
+
 │ │ ├── asset_model.dart
+
 │ │ └── option.dart
+
 │ └── services
+
 │ │ └── home_service.dart
+
 │ └── view
+
 │ │ └── widgets
+
 │ │ │ └── asset_widget.dart
+
 │ │ └── home_screen.dart
+
 │ └── view_model
+
 │ │ └── home_controller.dart
 
 ## Setup Instructions
