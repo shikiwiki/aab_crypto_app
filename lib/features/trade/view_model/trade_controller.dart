@@ -1,8 +1,6 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
-import 'package:aab_crypto_app/core/localizations/app_strings.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
 import 'package:aab_crypto_app/features/trade/services/trade_service.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class TradeController extends GetxController {
@@ -30,23 +28,10 @@ class TradeController extends GetxController {
   }
 
   Future<void> fetchAssets() async {
-    try {
-      final response = await tradeService.fetchAssets();
-
-      if (response.statusCode == AppConstants.codeOk) {
-        List<AssetModel> allAssets = (response.data as List)
-            .map((json) => AssetModel.fromJson(json))
-            .toList();
-        for (var asset in allAssets) {
-          if (asset.isCrypto && asset.price != null) cryptoAssets.add(asset);
-        }
-      } else {
-        throw Exception(AppStrings.fetchAssetsExceptionMessage);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
+    final allAssets = await tradeService.fetchAssets();
+    for (var asset in allAssets) {
+      if (asset.isCrypto && asset.price != null) cryptoAssets.add(asset);
     }
-
     if (cryptoAssets.isNotEmpty) {
       currentAsset.value = cryptoAssets.first;
     }

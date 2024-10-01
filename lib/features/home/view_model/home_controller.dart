@@ -2,7 +2,6 @@ import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
 import 'package:aab_crypto_app/features/home/services/home_service.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -53,46 +52,20 @@ class HomeController extends GetxController {
 
   Future<void> fetchAssets() async {
     isLoading.value = true;
-    try {
-      final response = await homeService.fetchAssets();
-
-      if (response.statusCode == AppConstants.codeOk) {
-        List<AssetModel> allAssets = (response.data as List)
-            .map((json) => AssetModel.fromJson(json))
-            .toList();
-        List<AssetModel> filteredItems = [];
-        for (var asset in allAssets) {
-          if (asset.isCrypto && asset.price != null) filteredItems.add(asset);
-        }
-        assets.assignAll(filteredItems);
-        displayAssets.assignAll(assets.take(displaySize));
-      } else {
-        throw Exception(AppStrings.fetchAssetsExceptionMessage);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      isLoading.value = false;
+    final allAssets = await homeService.fetchAssets();
+    List<AssetModel> filteredAssets = [];
+    for (var asset in allAssets) {
+      if (asset.isCrypto && asset.price != null) filteredAssets.add(asset);
     }
+    assets.assignAll(filteredAssets);
+    displayAssets.assignAll(assets.take(displaySize));
+    isLoading.value = false;
   }
 
   Future<void> fetchIcons() async {
-    try {
-      final response = await homeService.fetchIcons();
-
-      if (response.statusCode == AppConstants.codeOk) {
-        final List<dynamic> data = response.data;
-        for (var asset in data) {
-          if (asset[AppStrings.assetId] != null &&
-              asset[AppStrings.url] != null) {
-            iconUrls[asset[AppStrings.assetId]] = asset[AppStrings.url];
-          }
-        }
-      } else {
-        throw Exception(AppStrings.fetchIconsExceptionMessage);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
+    final allIcons = await homeService.fetchIcons();
+    if (allIcons.isNotEmpty) {
+      iconUrls.value = allIcons;
     }
   }
 }

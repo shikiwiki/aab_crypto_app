@@ -26,10 +26,18 @@ class _TradeScreenState extends State<TradeScreen> {
 
     cryptoAmountController.addListener(() {
       String correctValue = cryptoAmountController.text.cleanInput();
-      if (correctValue.isNotEmpty &&
-          correctValue.split('.').length <= AppConstants.two) {
-        tradeController.cryptoAmount =
-            num.tryParse(correctValue) ?? AppConstants.zero;
+      if (correctValue.isEmpty) {
+        cryptoAmountController.text = AppStrings.zeroString;
+        tradeController.cryptoAmount = AppConstants.zero;
+      } else {
+        if (correctValue != cryptoAmountController.text) {
+          cryptoAmountController.text = correctValue;
+        }
+        if (correctValue.isNotEmpty &&
+            correctValue.split('.').length <= AppConstants.two) {
+          tradeController.cryptoAmount =
+              num.tryParse(correctValue) ?? AppConstants.zero;
+        }
       }
       tradeController.calculateFiatAmount();
     });

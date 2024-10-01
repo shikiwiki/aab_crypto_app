@@ -11,19 +11,16 @@ void setupDi() {
   //Register ApiProvider
   Get.lazyPut<ApiProvider>(() => ApiProvider());
 
-  // Register MainService
-  Get.lazyPut<MainServiceImpl>(() => MainServiceImpl());
+  // Register Main dependencies
+  Get.lazyPut<MainService>(() => MainServiceImpl());
+  Get.lazyPut(() => MainController(Get.find<MainService>()));
 
-  // Register HomeService
-  Get.lazyPut<HomeServiceImpl>(() => HomeServiceImpl(Get.find<ApiProvider>()));
+  // Register Home dependencies
+  Get.lazyPut<HomeService>(() => HomeServiceImpl(Get.find<ApiProvider>()));
+  Get.lazyPut(() => HomeController(Get.find<HomeService>()));
 
-  // Register TradeService
-  Get.lazyPut<TradeServiceImpl>(() => TradeServiceImpl(Get.find<ApiProvider>()));
-
-  Get.lazyPut(() => MainController(Get.find<MainServiceImpl>()));
-
-  Get.lazyPut(() => HomeController(Get.find<HomeServiceImpl>()));
-
-  //Register Trade dependencies
-  Get.lazyPut(() => TradeController(Get.find<TradeServiceImpl>()));
+  // Register Trade dependencies
+  Get.lazyPut<TradeService>(
+      () => TradeServiceImpl(Get.find<ApiProvider>()));
+  Get.lazyPut(() => TradeController(Get.find<TradeService>()));
 }

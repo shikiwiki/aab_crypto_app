@@ -15,8 +15,9 @@ class CryptoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      home: MainScreen(),
+    return GetMaterialApp(
+      routes: {'/main': (context) => const MainScreen()},
+      home: const MainScreen(),
     );
   }
 }
