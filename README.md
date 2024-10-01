@@ -53,40 +53,39 @@ lib/
 │ ├── localizations
 │ │ └── app_strings.dart
 │ ├── ui_kit
-│ │ ├── colors
-│ │ │ └── app_strings.dart
-│ │ └── widgets
-│ │ └── asset_widget.dart
+│ │ └── colors
+│ │ │ └── app_colors.dart
 │ ├── utils
-│ │ ├── enums
-│ │ │ └── option.dart
 │ │ └── extensions
-│ │ └── string_helper.dart
+│ │ │ └── string_helper.dart
 ├── features
 │ ├── home
 │ │ ├── models
-│ │ │ └── assets_model.dart
+│ │ │ ├── asset_model.dart
+│ │ │ └── option.dart
 │ │ └── services
-│ │ └── home_service.dart
+│ │ │ └── home_service.dart
 │ │ └── view
-│ │ └── home_screen.dart
+│ │ │ └── widgets
+│ │ │ │ └── asset_widget.dart
+│ │ │ └── home_screen.dart
 │ │ └── view_model
-│ │ └── home_controller.dart
+│ │ │ └── home_controller.dart
 │ ├── main
 │ │ └── services
-│ │ └── main_service.dart
+│ │ │ └── main_service.dart
 │ │ └── view
-│ │ └── log_in_modal.dart
-│ │ └── main_screen.dart
+│ │ │ └── log_in_modal.dart
+│ │ │ └── main_screen.dart
 │ │ └── view_model
-│ │ └── main_controller.dart
+│ │ │ └── main_controller.dart
 │ ├── trade
 │ │ └── services
-│ │ └── trade_service.dart
+│ │ │ └── trade_service.dart
 │ │ └── view
-│ │ └── trade_screen.dart
+│ │ │ └── trade_screen.dart
 │ │ └── view_model
-│ │ └── trade_controller.dart
+│ │ │ └── trade_controller.dart
 └── main.dart
 
 ## Setup Instructions

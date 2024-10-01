@@ -1,6 +1,6 @@
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
-import 'package:aab_crypto_app/features/home/enums/option.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
+import 'package:aab_crypto_app/features/home/models/option.dart';
 import 'package:flutter/material.dart';
 
 class AssetWidget extends StatefulWidget {
