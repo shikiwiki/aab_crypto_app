@@ -28,7 +28,7 @@ class HomeServiceImpl implements HomeService {
         return const Left(AppStrings.fetchAssetsExceptionMessage);
       }
     } catch (e) {
-      return Left(e.toString());
+      return const Left(AppStrings.noConnectionMessage);
     }
   }
 
