@@ -53,20 +53,16 @@ class MainScreen extends StatelessWidget {
         ],
       ),
       actions: [
-        _buildLoginButton(controller, context),
+        Obx(() {
+          return controller.isLoggedIn.value
+              ? const SizedBox.shrink()
+              : IconButton(
+                  icon: const Icon(Icons.login),
+                  onPressed: () => _showLoginModal(context),
+                );
+        }),
       ],
     );
-  }
-
-  Widget _buildLoginButton(MainController controller, BuildContext context) {
-    return Obx(() {
-      return controller.isLoggedIn.value
-          ? const SizedBox.shrink()
-          : IconButton(
-              icon: const Icon(Icons.login),
-              onPressed: () => _showLoginModal(context),
-            );
-    });
   }
 
   void _showLoginModal(BuildContext context) {

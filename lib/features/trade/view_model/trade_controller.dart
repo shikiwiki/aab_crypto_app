@@ -1,4 +1,5 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
+import 'package:aab_crypto_app/core/localizations/app_strings.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
 import 'package:aab_crypto_app/features/trade/services/trade_service.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ class TradeController extends GetxController {
   var currentAsset = AssetModel.empty().obs;
   var cryptoAssets = <AssetModel>[].obs;
   num cryptoAmount = AppConstants.zero;
+  var errorMessage = AppStrings.empty.obs;
   final TradeService tradeService;
 
   TradeController(this.tradeService);
@@ -32,7 +34,6 @@ class TradeController extends GetxController {
     result.fold(
       (errorMessage) {
         currentAsset.value = AssetModel.empty();
-        throw Exception(errorMessage);
       },
       (allAssets) {
         for (var asset in allAssets) {

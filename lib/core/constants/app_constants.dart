@@ -19,5 +19,5 @@ abstract class AppConstants {
 
   static const double paddingMedium = 24;
 
-  static const double separatorSize = 10;
+  static const double separatorMedium = 10;
 }

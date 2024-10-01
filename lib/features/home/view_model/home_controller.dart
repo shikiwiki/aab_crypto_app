@@ -11,6 +11,7 @@ class HomeController extends GetxController {
   var iconUrls = <String, String>{}.obs;
   var sortingCriteria = AppStrings.empty.obs;
   var isLoading = false.obs;
+  var errorMessage = AppStrings.empty.obs;
 
   final HomeService homeService;
 
@@ -24,8 +25,40 @@ class HomeController extends GetxController {
 
   Future<void> fetch() async {
     if (isLoading.value) return;
-    fetchIcons();
     fetchAssets();
+    fetchIcons();
+  }
+
+  Future<void> fetchAssets() async {
+    isLoading.value = true;
+    errorMessage.value = AppStrings.empty;
+    final result = await homeService.fetchAssets();
+    List<AssetModel> filteredAssets = [];
+    result.fold(
+      (errorMessage) {
+        this.errorMessage.value = errorMessage;
+      },
+      (allAssets) {
+        for (var asset in allAssets) {
+          if (asset.isCrypto && asset.price != null) filteredAssets.add(asset);
+        }
+        assets.assignAll(filteredAssets);
+        displayAssets.assignAll(assets.take(displaySize));
+      },
+    );
+    isLoading.value = false;
+  }
+
+  Future<void> fetchIcons() async {
+    final result = await homeService.fetchIcons();
+    result.fold(
+      (_) {},
+      (allIcons) {
+        if (allIcons.isNotEmpty) {
+          iconUrls.value = allIcons;
+        }
+      },
+    );
   }
 
   void showMoreItems() {
@@ -48,38 +81,5 @@ class HomeController extends GetxController {
     }
     displayAssets.clear();
     displayAssets.value = assets.take(displaySize).toList();
-  }
-
-  Future<void> fetchAssets() async {
-    isLoading.value = true;
-    final result = await homeService.fetchAssets();
-    List<AssetModel> filteredAssets = [];
-    result.fold(
-      (errorMessage) {
-        throw Exception(errorMessage);
-      },
-      (allAssets) {
-        for (var asset in allAssets) {
-          if (asset.isCrypto && asset.price != null) filteredAssets.add(asset);
-        }
-        assets.assignAll(filteredAssets);
-        displayAssets.assignAll(assets.take(displaySize));
-      },
-    );
-    isLoading.value = false;
-  }
-
-  Future<void> fetchIcons() async {
-    final result = await homeService.fetchIcons();
-    result.fold(
-      (errorMessage) {
-        throw Exception(errorMessage);
-      },
-      (allIcons) {
-        if (allIcons.isNotEmpty) {
-          iconUrls.value = allIcons;
-        }
-      },
-    );
   }
 }

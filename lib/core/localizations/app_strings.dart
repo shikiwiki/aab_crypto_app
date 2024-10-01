@@ -37,4 +37,5 @@ abstract class AppStrings {
   static const invalidPasswordMessage =
       'Input only digits, letters or periods.';
   static const invalidEmailMessage = 'Input correct email.';
+  static const tryAgain = 'Try again';
 }
