@@ -40,7 +40,7 @@ practices, including state management with GetX.
 
 ## Project Structure
 
-The app follows MVVM architectural pattern with the following structure.
+The app follows MVVM architectural pattern.
 Every feature contains three layers:
 * view - stands for presentation,
 * view_model - stands for business logic,
