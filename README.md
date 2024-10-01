@@ -36,23 +36,58 @@ practices, including state management with GetX.
 
 ## API Resources
 
-- **Exchange Rates**: [ExchangeRate Host](https://exchangerate.host)
 - **Crypto Assets**: [CoinAPI](https://www.coinapi.io)
-  or [CryptoAPI](https://developers.cryptoapis.io)
 
 ## Project Structure
 
 The app follows a clean architecture with the following structure:
 
 lib/
-├── controllers/ # GetX Controllers
-├── models/ # Data Models
-├── services/ # API Handling
-├── views/ # UI Pages
-│ ├── home_screen.dart
-│ ├── trade_screen.dart
-│ └── login_modal.dart
-└── main.dart # Entry Point
+├── core
+│ ├── api
+│ │ └── api_provider.dart
+│ ├── constants
+│ │ └── app_constants.dart
+│ ├── di
+│ │ └── dependency_injection.dart
+│ ├── localizations
+│ │ └── app_strings.dart
+│ ├── ui_kit
+│ │ ├── colors
+│ │ │ └── app_strings.dart
+│ │ └── widgets
+│ │ └── asset_widget.dart
+│ ├── utils
+│ │ ├── enums
+│ │ │ └── option.dart
+│ │ └── extensions
+│ │ └── string_helper.dart
+├── features
+│ ├── home
+│ │ ├── models
+│ │ │ └── assets_model.dart
+│ │ └── services
+│ │ └── home_service.dart
+│ │ └── view
+│ │ └── home_screen.dart
+│ │ └── view_model
+│ │ └── home_controller.dart
+│ ├── main
+│ │ └── services
+│ │ └── main_service.dart
+│ │ └── view
+│ │ └── log_in_modal.dart
+│ │ └── main_screen.dart
+│ │ └── view_model
+│ │ └── main_controller.dart
+│ ├── trade
+│ │ └── services
+│ │ └── trade_service.dart
+│ │ └── view
+│ │ └── trade_screen.dart
+│ │ └── view_model
+│ │ └── trade_controller.dart
+└── main.dart
 
 ## Setup Instructions
 
@@ -62,57 +97,35 @@ To run this project on your local machine, follow these steps:
    bash
    git clone https://github.com/shikiwiki/aab_crypto_app.git
    cd aab_crypto_app
+
 2. **Install Flutter** (if you haven’t already):
 
    Follow the instructions from
    the [Flutter installation guide](https://flutter.dev/docs/get-started/install).
 
 3. **Install Dependencies**:
-
-   Ensure you have the latest version of the Dart SDK, then run:
-
-bash
-flutter pub get
+   Ensure you have at least 3.0.0 version of the Dart SDK, then run:
+   bash
+   flutter pub get
 
 4. **Run the App**:
 
    Connect your device or start an emulator, then execute:
 
-bash
-flutter run
+   bash
+   flutter run
 
 ## Technologies Used in `pubspec.yaml`
 
 The project uses the following dependencies:
 
-yaml
-name: aab_crypto_app
-description: "A new Flutter project."
-
-publish_to: 'none'
-
-version: 1.0.0+1
-
-environment:
-sdk: ^3.5.3
-dependencies:
-flutter:
-sdk: flutter
-get: ^4.6.6
-dio: ^5.7.0
-json_annotation: ^4.9.0
-json_serializable: ^6.8.0
-get_storage: ^2.1.1
-crypto: ^3.0.5
-
-dev_dependencies:
-flutter_test:
-sdk: flutter
-flutter_lints: ^4.0.0
-
-flutter:
-uses-material-design: true
-generate: true
+* GetX;
+* Dio;
+* JSON Annotation;
+* JSON Serializable;
+* GetStorage;
+* Crypto;
+* Dartz.
 
 ## Contribution
 
