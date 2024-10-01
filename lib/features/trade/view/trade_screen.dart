@@ -34,7 +34,7 @@ class _TradeScreenState extends State<TradeScreen> {
           cryptoAmountController.text = correctValue;
         }
         if (correctValue.isNotEmpty &&
-            correctValue.split('.').length <= AppConstants.two) {
+            correctValue.split(AppStrings.dot).length <= AppConstants.two) {
           tradeController.cryptoAmount =
               num.tryParse(correctValue) ?? AppConstants.zero;
         }
