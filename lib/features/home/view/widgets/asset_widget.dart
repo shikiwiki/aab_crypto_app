@@ -1,5 +1,5 @@
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
-import 'package:aab_crypto_app/core/utils/enums/option.dart';
+import 'package:aab_crypto_app/features/home/enums/option.dart';
 import 'package:aab_crypto_app/features/home/models/asset_model.dart';
 import 'package:flutter/material.dart';
 

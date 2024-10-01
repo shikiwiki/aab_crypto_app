@@ -1,6 +1,6 @@
 import 'package:aab_crypto_app/core/constants/app_constants.dart';
 import 'package:aab_crypto_app/core/localizations/app_strings.dart';
-import 'package:aab_crypto_app/core/ui_kit/widgets/asset_widget.dart';
+import 'package:aab_crypto_app/features/home/view/widgets/asset_widget.dart';
 import 'package:aab_crypto_app/features/home/view_model/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           if (index < homeController.displayAssets.length) {
             final asset = homeController.displayAssets[index];
+
             return AssetWidget(
               key: ValueKey(asset.assetId),
               asset: asset,

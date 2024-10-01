@@ -10,10 +10,10 @@ class MainController extends GetxController {
   MainController(this.mainService);
 
   void login(String email, String password) {
-    isLoggedIn.value = true;
     userEmail.value = email;
     mainService.write(AppStrings.isLoggedIn, true);
     mainService.write(AppStrings.userEmailKey, userEmail.value);
+    isLoggedIn.value = true;
   }
 
   void loadLoginState() {
