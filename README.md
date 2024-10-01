@@ -40,53 +40,27 @@ practices, including state management with GetX.
 
 ## Project Structure
 
-The app follows a clean architecture with the following structure:
+The app follows MVVM architectural pattern with the following structure.
+Every feature contains three layers:
+* view - stands for presentation,
+* view_model - stands for business logic,
+* services - stands for data.
 
-lib/
-├── core
-│ ├── api
-│ │ └── api_provider.dart
-│ ├── constants
-│ │ └── app_constants.dart
-│ ├── di
-│ │ └── dependency_injection.dart
-│ ├── localizations
-│ │ └── app_strings.dart
-│ ├── ui_kit
-│ │ └── colors
-│ │ │ └── app_colors.dart
-│ ├── utils
-│ │ └── extensions
-│ │ │ └── string_helper.dart
-├── features
-│ ├── home
-│ │ ├── models
-│ │ │ ├── asset_model.dart
-│ │ │ └── option.dart
-│ │ └── services
-│ │ │ └── home_service.dart
-│ │ └── view
-│ │ │ └── widgets
-│ │ │ │ └── asset_widget.dart
-│ │ │ └── home_screen.dart
-│ │ └── view_model
-│ │ │ └── home_controller.dart
-│ ├── main
-│ │ └── services
-│ │ │ └── main_service.dart
-│ │ └── view
-│ │ │ └── log_in_modal.dart
-│ │ │ └── main_screen.dart
-│ │ └── view_model
-│ │ │ └── main_controller.dart
-│ ├── trade
-│ │ └── services
-│ │ │ └── trade_service.dart
-│ │ └── view
-│ │ │ └── trade_screen.dart
-│ │ └── view_model
-│ │ │ └── trade_controller.dart
-└── main.dart
+Example of home feature below:
+
+features
+├── home
+│ ├── models
+│ │ ├── asset_model.dart
+│ │ └── option.dart
+│ └── services
+│ │ └── home_service.dart
+│ └── view
+│ │ └── widgets
+│ │ │ └── asset_widget.dart
+│ │ └── home_screen.dart
+│ └── view_model
+│ │ └── home_controller.dart
 
 ## Setup Instructions
 
@@ -134,4 +108,4 @@ issue for any changes or features you would like to propose.
 - [Flutter Documentation](https://flutter.dev/docs)
 - [GetX Package](https://pub.dev/packages/get)
 - [Dio Package](https://pub.dev/packages/dio)
-- [CoinAPI Documentation](https://www.coinapi.io/docs)
+- [CoinAPI Documentation](https://www.coinapi.io)

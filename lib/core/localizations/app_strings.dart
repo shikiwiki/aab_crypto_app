@@ -34,8 +34,7 @@ abstract class AppStrings {
   static const sortBy = 'Sort by';
   static const selectAsset = 'Select asset';
   static const userEmailKey = 'userEmailKey';
-  static const invalidPasswordMessage =
-      'Input only digits, letters or periods.';
+  static const invalidPasswordMessage = 'Only digits, letters or periods.';
   static const invalidEmailMessage = 'Input correct email.';
   static const tryAgain = 'Try again';
 
