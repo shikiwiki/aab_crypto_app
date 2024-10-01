@@ -21,35 +21,34 @@ class _TradeScreenState extends State<TradeScreen> {
   @override
   void initState() {
     super.initState();
-
     cryptoAmountController.text = tradeController.cryptoAmount.toString();
+    cryptoAmountController.addListener(_onCryptoAmountChange);
+  }
 
-    cryptoAmountController.addListener(() {
-      String correctValue = cryptoAmountController.text.cleanInput();
-      if (correctValue.isEmpty) {
-        cryptoAmountController.text = AppStrings.zeroString;
-        tradeController.cryptoAmount = AppConstants.zero;
-      } else {
-        if (correctValue != cryptoAmountController.text) {
-          cryptoAmountController.text = correctValue;
-        }
-        if (correctValue.isNotEmpty &&
-            correctValue.split(AppStrings.dot).length <= AppConstants.two) {
-          tradeController.cryptoAmount =
-              num.tryParse(correctValue) ?? AppConstants.zero;
-        }
+  void _onCryptoAmountChange() {
+    String cleanValue = cryptoAmountController.text.cleanInput();
+    if (cleanValue.isEmpty) {
+      tradeController.cryptoAmount = AppConstants.zero;
+      cryptoAmountController.text = AppStrings.zeroString;
+      return;
+    } else {
+      if (cleanValue != cryptoAmountController.text) {
+        cryptoAmountController.text = cleanValue;
       }
-      tradeController.calculateFiatAmount();
-    });
+      if (cleanValue.isNotEmpty &&
+          cleanValue.split(AppStrings.dot).length <= AppConstants.two) {
+        tradeController.cryptoAmount =
+            num.tryParse(cleanValue) ?? AppConstants.zero;
+      }
+    }
+    tradeController.calculateFiatAmount();
   }
 
   @override
   void dispose() {
-    tradeController.dispose();
     cryptoAmountController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -58,66 +57,82 @@ class _TradeScreenState extends State<TradeScreen> {
       if (!isLoggedIn) {
         return const Center(child: Text(AppStrings.noAccessMessage));
       }
-      if (cryptoAmountController.text !=
-          tradeController.cryptoAmount.toString()) {
+
+      // Synchronize the TextField value with the tradeController's cryptoAmount
+      if (cryptoAmountController.text != tradeController.cryptoAmount.toString()) {
         cryptoAmountController.text = tradeController.cryptoAmount.toString();
       }
+
       return Padding(
         padding: const EdgeInsets.all(AppConstants.paddingMedium),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            DropdownButton<String>(
-              hint: const Text(AppStrings.selectAsset),
-              value: tradeController.currentAsset.value.name.isNotEmpty
-                  ? tradeController.currentAsset.value.name
-                  : null,
-              items: tradeController.cryptoAssets.map((asset) {
-                return DropdownMenuItem<String>(
-                  value: asset.name,
-                  child: Text(asset.name),
-                );
-              }).toList(),
-              onChanged: (value) {
-                if (value != null) {
-                  tradeController.selectItem(value);
-                }
-              },
-            ),
-            TextField(
-              controller: cryptoAmountController,
-              decoration:
-                  const InputDecoration(labelText: AppStrings.cryptoAmount),
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onTap: () {
-                if (cryptoAmountController.text.isEmpty ||
-                    cryptoAmountController.text == AppStrings.zeroString) {
-                  cryptoAmountController.clear();
-                }
-              },
-            ),
+            _buildAssetDropdown(),
+            _buildCryptoAmountField(),
             const SizedBox(height: AppConstants.separatorSize),
-            TextField(
-              decoration:
-                  const InputDecoration(labelText: AppStrings.fiatAmount),
-              textAlign: TextAlign.center,
-              readOnly: true,
-              controller: TextEditingController(
-                text: tradeController.fiatAmount.value
-                    .toStringAsFixed(AppConstants.two),
-              ),
-            ),
+            _buildFiatAmountField(),
             const SizedBox(height: AppConstants.separatorSize),
-            ElevatedButton(
-              onPressed: () {
-                tradeController.swapFields();
-              },
-              child: const Text(AppStrings.swap),
-            ),
+            _buildSwapButton(),
           ],
         ),
       );
     });
+  }
+
+  Widget _buildAssetDropdown() {
+    return DropdownButton<String>(
+      hint: const Text(AppStrings.selectAsset),
+      value: tradeController.currentAsset.value.name.isNotEmpty
+          ? tradeController.currentAsset.value.name
+          : null,
+      items: tradeController.cryptoAssets.map((asset) {
+        return DropdownMenuItem<String>(
+          value: asset.name,
+          child: Text(asset.name),
+        );
+      }).toList(),
+      onChanged: (value) {
+        if (value != null) {
+          tradeController.selectItem(value);
+        }
+      },
+    );
+  }
+
+  Widget _buildCryptoAmountField() {
+    return TextFormField(
+      controller: cryptoAmountController,
+      decoration: const InputDecoration(labelText: AppStrings.cryptoAmount),
+      textAlign: TextAlign.center,
+      keyboardType: TextInputType.number,
+      onTap: () {
+        if (cryptoAmountController.text.isEmpty ||
+            cryptoAmountController.text == AppStrings.zeroString) {
+          cryptoAmountController.clear();
+        }
+      },
+    );
+  }
+
+  Widget _buildFiatAmountField() {
+    return TextField(
+      decoration: const InputDecoration(labelText: AppStrings.fiatAmount),
+      textAlign: TextAlign.center,
+      readOnly: true,
+      controller: TextEditingController(
+        text: tradeController.fiatAmount.value
+            .toStringAsFixed(AppConstants.two),
+      ),
+    );
+  }
+
+  Widget _buildSwapButton() {
+    return ElevatedButton(
+      onPressed: () {
+        tradeController.swapFields();
+      },
+      child: const Text(AppStrings.swap),
+    );
   }
 }
