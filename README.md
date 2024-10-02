@@ -107,7 +107,6 @@ To run this project on your local machine, follow these steps:
 * JSON Annotation;
 * JSON Serializable;
 * GetStorage;
-* Crypto;
 * Dartz.
 
 ## Contribution
