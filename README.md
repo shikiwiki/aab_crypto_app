@@ -28,10 +28,10 @@ practices, including state management with GetX.
 ## Technologies Used
 
 - Flutter (Dart)
-- GetX for state management
+- GetX for state management and navigation
 - Dio for API calls
 - GetStorage for local storage
-- JSON Annotation & JSON Serializable for handling data models
+- JSON Annotation & JSON Serializable for handling data
 - Dartz for efficial API responses processing
 - Responsive design following Material Design guidelines
 - Custom UI components using Flutter's built-in widgets
