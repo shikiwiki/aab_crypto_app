@@ -31,6 +31,8 @@ practices, including state management with GetX.
 - GetX for state management
 - Dio for API calls
 - GetStorage for local storage
+- JSON Annotation & JSON Serializable for handling data models
+- Dartz for efficial API responses processing
 - Responsive design following Material Design guidelines
 - Custom UI components using Flutter's built-in widgets
 
@@ -99,15 +101,6 @@ To run this project on your local machine, follow these steps:
 
    bash
    flutter run
-
-## Technologies Used:
-
-* GetX;
-* Dio;
-* JSON Annotation;
-* JSON Serializable;
-* GetStorage;
-* Dartz.
 
 ## Contribution
 
